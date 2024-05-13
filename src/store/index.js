@@ -6,17 +6,9 @@ import { produitsReducer as produits } from './produits';
 import { usersReducer as users } from './users';
 import { sessionReducer as session } from './session';
 
-//import { stoptimesReducer as defauts } from './defauts';
-
 import {
   persistReducer,
   persistStore,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
 } from 'redux-persist';
 
 import storage from 'redux-persist/lib/storage';

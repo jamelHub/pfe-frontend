@@ -17,7 +17,6 @@ root.render(
         <BrowserRouter>
           <App />
         </BrowserRouter>
-        /
       </PersistGate>
     </Provider>
   </React.StrictMode>,
@@ -25,3 +24,10 @@ root.render(
 );
 
 reportWebVitals();
+
+
+/////// 1  => templates  | 1 | 2 | 3 | (get)
+//////  => update template 1  | get 1 | w put 1 ==> 2 request 
+
+//|1    |
+//|2 , 3 |

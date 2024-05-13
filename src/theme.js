@@ -120,6 +120,14 @@ export const tokens = (mode) => ({
       }),
 });
 
+
+// primary color  (blue)
+// second color (yellow)
+// danger (red)
+// succefuly ( green )
+
+
+
 // mui theme settings
 export const themeSettings = (mode) => {
   const colors = tokens(mode);
@@ -199,7 +207,7 @@ export const ColorModeContext = createContext({
 });
 
 export const useMode = () => {
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState("light");
 
   const colorMode = useMemo(
     () => ({

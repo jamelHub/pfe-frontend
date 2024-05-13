@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { ColorModeContext, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Topbar from './scenes/global/Topbar';
+import { Routes, Route } from 'react-router-dom';
 import Mysidebar from './scenes/global/Sidebar';
 import Dashboard from './scenes/dashboard';
-import Team from './scenes/team';
-import Contacts from './scenes/contacts';
-import Invoices from './scenes/invoices';
-import Form from './scenes/form';
-import Line from './scenes/line';
-import LineCMS from './scenes/lineCMS';
-import LineCABLAGE from './scenes/lineCABLAGE';
-import Pie from './scenes/pie';
-import Calendar from './scenes/calendar';
+import Templates from './scenes/templates';
+import TemplateForm from './scenes/templates/TemplateForm' ;
+import Constraints from './scenes/constraints';
 import Login from './scenes/login';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,7 +17,7 @@ function App() {
   const [isSidebar, setIsSidebar] = useState(true);
   const navigate = useNavigate();
 
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   const checkLogin = async () => {
     try {
@@ -33,7 +26,7 @@ function App() {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`, // JWT
         },
       });
       if (response.ok) {
@@ -43,14 +36,14 @@ function App() {
         navigate('/');
 
       } else {
+        setIsLogin(false);
+        navigate('/login');
         throw Error(await response.text());
       }
     } catch (error) {
       setIsLogin(false);
       navigate('/login');
 
-      //   setFailed(true);
-      //   setPassword('');
     }
   };
 
@@ -64,22 +57,16 @@ function App() {
         <CssBaseline />
 
         <div className="flex relative  h-screen w-screen">
-            <Mysidebar isSidebar={isSidebar}   isLogin={isLogin}/>
+            <Mysidebar isSidebar={isSidebar}   />
 
           <main className="h-full w-full ">
-          <Topbar setIsSidebar={setIsSidebar}  isLogin={isLogin}/>
             <Routes>
               <Route path="/" element={< Dashboard/>} />
               <Route path="/login" element={<Login />}  />
-              <Route path="/team" element={<Team />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/invoices" element={<Invoices />} />
-              <Route path="/form" element={<Form />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/lineCMS" element={<LineCMS />} />
-              <Route path="/lineCABLAGE" element={<LineCABLAGE />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/templates" element={<Templates />} />
+              <Route path="/templates/create" element={<TemplateForm />} />
+              <Route path="/constraints" element={<Constraints />} />
+  
             </Routes>
           </main>
         </div>

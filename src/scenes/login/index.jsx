@@ -1,25 +1,20 @@
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Formik } from 'formik';
-import { Box, Button, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { setWithExpiry } from '../../util/localstorage';
 import { useNavigate } from 'react-router-dom';
 import { sessionActions } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const validationSchema = yup.object({
-  email: yup
-    .string('Enter your email')
-    .email('Enter a valid email')
-    .required('Email is required'),
+  name: yup
+    .string('Enter your name')
+    .required('Name is required'),
   password: yup
     .string('Enter your password')
-    .min(8, 'Password should be of minimum 8 characters length')
     .required('Password is required'),
 });
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,8 +22,8 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'foobar@example.com',
-      password: 'foobar',
+      name: '',
+      password: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -38,14 +33,14 @@ const Login = () => {
 
   const handlePasswordLogin = async (values) => {
     try {
-      const { email, password } = values;
-      const response = await fetch(`http://192.168.1.97:8080/api/session`, {
+      const { name, password } = values;
+      const response = await fetch(`http://44.201.105.2/login`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, password }),
       });
       if (response.ok) {
         const user = await response.json();
@@ -57,29 +52,32 @@ const Login = () => {
         throw Error(await response.text());
       }
     } catch (error) {
-      //   setFailed(true);
-      //   setPassword('');
+
     }
   };
 
+
+
+
+
   return (
     <div className="flex h-full w-full  ">
-      <div className="w-3/6"> Image </div>
-      <div className="w-3/6 m-auto h-full flex flex-col justify-center bg-[#1F2A40] ">
+      <div className="w-2/6 m-auto h-full flex flex-col justify-center ">
+      <h1 className='text-center font-bold text-4xl mb-12' > Welcome</h1>
         <form
           onSubmit={formik.handleSubmit}
-          className="w-4/6 gap-3 flex flex-col ml-5"
+          className=" flex flex-col justify-between h-40 ml-5"
         >
           <TextField
             fullWidth
-            id="email"
-            name="email"
-            label="Email"
-            value={formik.values.email}
+            id="name"
+            name="name"
+            label="Name"
+            value={formik.values.name}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
           />
           <TextField
             fullWidth

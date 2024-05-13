@@ -4,17 +4,10 @@ import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../theme';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
 import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
-import PieChartOutlineOutlinedIcon from '@mui/icons-material/PieChartOutlineOutlined';
-import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-
-import { useSelector } from 'react-redux';
-
+import LogoutIcon from '@mui/icons-material/Logout';
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -41,7 +34,8 @@ const Mysidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState('Dashboard');
 
-  const isLogin = useSelector((state) => state.session.user);
+  // const isLogin = useSelector((state) => state.session.user);
+  const isLogin = true;
 
   if (isLogin)
     return (
@@ -66,7 +60,6 @@ const Mysidebar = () => {
       >
         <Sidebar collapsed={isCollapsed}>
           <Menu iconShape="square">
-            {/* LOGO AND MENU ICON */}
             <MenuItem
               onClick={() => setIsCollapsed(!isCollapsed)}
               icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
@@ -99,7 +92,7 @@ const Mysidebar = () => {
                     alt="profile-user"
                     width="100px"
                     height="100px"
-                    src={'../../assets/emka.jpeg'}
+                    src={'../../assets/proxym_logo.jpg'}
                     style={{ cursor: 'pointer', borderRadius: '50%' }}
                   />
                 </Box>
@@ -110,10 +103,10 @@ const Mysidebar = () => {
                     fontWeight="bold"
                     sx={{ m: '10px 0 0 0' }}
                   >
-                    Emka MED
+                    Proxym
                   </Typography>
                   <Typography variant="h5" color={colors.blueAccent[500]}>
-                    "VP Admin"
+                    "Admin"
                   </Typography>
                 </Box>
               </Box>
@@ -127,99 +120,34 @@ const Mysidebar = () => {
                 selected={selected}
                 setSelected={setSelected}
               />
+  
 
-              <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: '15px 0 5px 20px' }}
-              >
-                Data
-              </Typography>
               <Item
-                title="Manage Team"
-                to="/team"
-                icon={<PeopleOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Contacts Information"
-                to="/contacts"
-                icon={<ContactsOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Invoices Balances"
-                to="/invoices"
+                title="Templates"
+                to="/templates"
                 icon={<ReceiptOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
-
-              <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: '15px 0 5px 20px' }}
-              >
-                Pages
-              </Typography>
+              />    
               <Item
-                title="Profile Form"
-                to="/form"
-                icon={<PersonOutlinedIcon />}
+                title="Constraints"
+                to="/constraints"
+                icon={<ContactsOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
-              <Item
-                title="Calendar"
-                to="/calendar"
-                icon={<CalendarTodayOutlinedIcon />}
+              />       
+                <Item
+                title="Log out"
+                to="/logout"
+                icon={<LogoutIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
-
-              <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: '15px 0 5px 20px' }}
-              >
-                Charts
-              </Typography>
-              <Item
-                title="Pie Chart"
-                to="/pie"
-                icon={<PieChartOutlineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Line Chart CMS"
-                to="/lineCMS"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Line Chart TRAD"
-                to="/line"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Line Chart CABLAGE"
-                to="/lineCABLAGE"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
+              />   
             </Box>
           </Menu>
         </Sidebar>
       </Box>
     );
-  //t3rafch kifeh t3ytlha l page w yb9a fix l navbarr f ap
   else {
     return null;
   }

@@ -14,11 +14,9 @@ const Team = () => {
 
 
 
-
-  const workoutsState=useSelector((state)=>state.auth.user)
+ const workoutsState=useSelector((state)=>state.auth.user)
   console.log(workoutsState);
 
-//chnowa t7b djib mfhmtch
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const columns = [
@@ -54,11 +52,11 @@ flex: 1 ,
       flex: 1,
       renderCell: ({ row: { access } }) => {
         return (
-          <Box//eyhay temchy taqraa juste tawa kel acces lazem twali tekhdem deja bekri lktiba mahich dhra waqteli kant todher
+          <Box
             width="60%"
             m="0 auto"
             p="5px"
-            display="flex"// acces level hakom chnaaml bihom manage ama naqsin mech mochkla juste lesinfos mtaa3 eli amalnelhom creer kima f contact wadha7
+            display="flex"
             justifyContent="center"
             backgroundColor={
               access === "admin"
@@ -80,9 +78,7 @@ flex: 1 ,
       },
     },
   ];
- // const transformedData = workoutsState.map(row => ({ ...row, id: row._id }));
 const transformedData = workoutsState && workoutsState.map(row => ({ ...row, id: row._id })) ;
-// ret l map hedhy ma habtech tekhdem w les donne yetqraw f team
 
   return (
     <Box m="20px">
@@ -121,48 +117,15 @@ const transformedData = workoutsState && workoutsState.map(row => ({ ...row, id:
 
        <DataGrid  
         getRowId={(row) => row._id} 
-        rows={workoutsState} // Utilisation directe de workoutsState
+        rows={workoutsState} 
         columns={columns}
         components={{
           Toolbar: GridToolbar
         }}
-        /* 
-        <DataGrid 
-    rows={workoutsState}
-    columns={columns}
-    getRowId={(row) => row._id}
-    components={{ Toolbar: GridToolbar }}                                                           
-/>
- */
         />
 
 
 
-        {/*{!isLoading && workoutsState && (
-  <DataGrid
-    loading={isLoading || !workoutsState}
-    getRowId={(row) => row._id}
-    checkboxSelection 
-    rows={workoutsState}
-    columns={columns}
-    components={{
-      Toolbar: GridToolbar
-    }}
-  />
-)}*/}
-
-       {/*} <DataGrid  
-         loading={isLoading || !workoutsState}
-          getRowId={(row) => row._id}
-        checkboxSelection 
-        
-        rows={workoutsState}
-        columns={columns}
-        components={{
-        
-          Toolbar: GridToolbar
-        }}
-      />*/}
       </Box>
     </Box>
   );
