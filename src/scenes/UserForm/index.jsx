@@ -6,9 +6,11 @@ import { Box, Button, TextField } from '@mui/material';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { setWithExpiry } from '../../util/localstorage';
+
 import { useNavigate } from 'react-router-dom';
-import { sessionActions } from '../../store';
+import { usersActions } from '../../store';
 import { useDispatch } from 'react-redux';
+import { getWithExpiry } from '../../util/localstorage';
 
 const validationSchema = yup.object().shape({
   email: yup
@@ -51,27 +53,43 @@ const UserForm = () => {
       responsable: '',
       departement: '',
     },
-    validationSchema: validationSchema,
+    //    validationSchema: validationSchema,
     onSubmit: (values) => {
       handlePasswordLogin(values);
     },
   });
   const handlePasswordLogin = async (values) => {
     try {
-      const { email, password } = values;
-      const response = await fetch(`http://192.168.1.97:8080/api/session`, {
+      const {
+        email,
+        nom,
+        password,
+        matricule,
+        administrator,
+        departement,
+        responsable,
+      } = values;
+      const response = await fetch(`http://localhost:8080/api/user`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          nom,
+          password,
+          matricule,
+          administrator,
+          departement,
+          responsable,
+        }),
       });
       if (response.ok) {
         const user = await response.json();
 
-        setWithExpiry('TOKEN', user.token.data, user.token.expiresIn);
-        dispatch(sessionActions.updateUser(user));
+        //  dispatch(usersActions.update(user));
         navigate('/');
       } else {
         throw Error(await response.text());
@@ -87,9 +105,7 @@ const UserForm = () => {
         onSubmit={formik.handleSubmit}
         className="w-3/6 gap-3 flex flex-col ml-5 justify-center"
       >
-        <h1 className="font-bold text-2xl text-center my-2">
-          Create New User
-        </h1>
+        <h1 className="font-bold text-2xl text-center my-2">Create New User</h1>
 
         <TextField
           fullWidth
