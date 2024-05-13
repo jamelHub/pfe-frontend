@@ -21,9 +21,7 @@ const TitleUser = [
 
 const Users = () => {
   const navigate = useNavigate();
-
   const [user, setUser] = useState([]);
-
   const handleUsers = async () => {
     try {
       const response = await fetch(`http://localhost:8080/api/user`, {
@@ -47,11 +45,10 @@ const Users = () => {
       //   setPassword('');
     }
   };
-
   useEffect(() => {
     handleUsers();
   }, []);
-
+  
   return (
     <div className="mx-2">
       <h1> users </h1>
@@ -87,7 +84,12 @@ const Users = () => {
             </div>
             <div className="w-1/12"> {user.departement}</div>
             <div className="flex ">
-              <IconButton aria-label="delete">
+              <IconButton
+                aria-label="edit"
+                onClick={() => {
+                  navigate('edit/' + user._id);
+                }}
+              >
                 <EditIcon />
               </IconButton>
               <IconButton aria-label="delete">

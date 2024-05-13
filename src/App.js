@@ -13,6 +13,7 @@ import Login from './scenes/login';
 import { useNavigate } from 'react-router-dom';
 
 import UserForm from './scenes/UserForm';
+import EditUser from './scenes/EditUser';
 
 import { getWithExpiry } from './util/localstorage';
 
@@ -69,6 +70,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/users" element={<Users />} />
               <Route path="/users/create" element={<UserForm />} />
+              <Route path="users/edit/:id" element={<EditUser />} />
 
               <Route path="/ofs" element={<Ofs />} />
               <Route path="/produits" element={<Produits />} />
