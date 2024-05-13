@@ -9,12 +9,13 @@ import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import SerachIcon from '@mui/icons-material/Search';
 import { useSelector } from 'react-redux';
+import { getWithExpiry } from '../../util/localstorage';
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
-  const isLogin = useSelector((state) => state.session.user);
+  const isLogin = getWithExpiry('TOKEN');
 
   if (isLogin)
     return (

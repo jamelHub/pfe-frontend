@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { ColorModeContext, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Topbar from './scenes/global/Topbar';
 import Mysidebar from './scenes/global/Sidebar';
 import Dashboard from './scenes/dashboard';
-import Team from './scenes/team';
-import Contacts from './scenes/contacts';
-import Invoices from './scenes/invoices';
-import Form from './scenes/form';
-import Line from './scenes/line';
-import LineCMS from './scenes/lineCMS';
-import LineCABLAGE from './scenes/lineCABLAGE';
-import Pie from './scenes/pie';
-import Calendar from './scenes/calendar';
+import Users from './scenes/users';
+import Defauts from './scenes/defauts';
+import Produits from './scenes/produits';
+import Ofs from './scenes/ofs';
 import Login from './scenes/login';
 import { useNavigate } from 'react-router-dom';
+
+import UserForm from './scenes/UserForm';
 
 import { getWithExpiry } from './util/localstorage';
 
@@ -28,7 +25,7 @@ function App() {
 
   const checkLogin = async () => {
     try {
-      const response = await fetch(`http://192.168.1.97:8080/api/user`, {
+      const response = await fetch(`http://localhost:8080/api/user`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -41,7 +38,6 @@ function App() {
 
         setIsLogin(true);
         navigate('/');
-
       } else {
         throw Error(await response.text());
       }
@@ -64,22 +60,22 @@ function App() {
         <CssBaseline />
 
         <div className="flex relative  h-screen w-screen">
-            <Mysidebar isSidebar={isSidebar}   isLogin={isLogin}/>
+          {true && <Mysidebar isSidebar={isSidebar} isLogin={isLogin} />}
 
           <main className="h-full w-full ">
-          <Topbar setIsSidebar={setIsSidebar}  isLogin={isLogin}/>
+            {true && <Topbar setIsSidebar={setIsSidebar} isLogin={isLogin} />}
             <Routes>
-              <Route path="/" element={< Dashboard/>} />
-              <Route path="/login" element={<Login />}  />
-              <Route path="/team" element={<Team />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/invoices" element={<Invoices />} />
-              <Route path="/form" element={<Form />} />
-              <Route path="/pie" element={<Pie />} />
-              <Route path="/line" element={<Line />} />
-              <Route path="/lineCMS" element={<LineCMS />} />
-              <Route path="/lineCABLAGE" element={<LineCABLAGE />} />
-              <Route path="/calendar" element={<Calendar />} />
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/users" element={<Users />} />
+              <Route path="/users/create" element={<UserForm />} />
+
+              <Route path="/ofs" element={<Ofs />} />
+              <Route path="/produits" element={<Produits />} />
+
+              {/*               <Route path="/produits/:id" element={<AgencyPage />} />
+               */}
+              <Route path="/defauts" element={<Defauts />} />
             </Routes>
           </main>
         </div>

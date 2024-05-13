@@ -27,8 +27,8 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: 'foobar@example.com',
-      password: 'foobar',
+      email: '',
+      password: '',
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
@@ -39,7 +39,7 @@ const Login = () => {
   const handlePasswordLogin = async (values) => {
     try {
       const { email, password } = values;
-      const response = await fetch(`http://192.168.1.97:8080/api/session`, {
+      const response = await fetch(`http://localhost:8080/api/session`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -65,7 +65,7 @@ const Login = () => {
   return (
     <div className="flex h-full w-full  ">
       <div className="w-3/6"> Image </div>
-      <div className="w-3/6 m-auto h-full flex flex-col justify-center bg-[#1F2A40] ">
+      <div className="w-3/6 m-auto h-full flex flex-col justify-center bg-inherit ">
         <form
           onSubmit={formik.handleSubmit}
           className="w-4/6 gap-3 flex flex-col ml-5"

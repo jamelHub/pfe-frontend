@@ -4,16 +4,11 @@ import { Box, IconButton, Typography, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../theme';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
-import PeopleOutlinedIcon from '@mui/icons-material/PeopleOutlined';
-import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import CalendarTodayOutlinedIcon from '@mui/icons-material/CalendarTodayOutlined';
-import PieChartOutlineOutlinedIcon from '@mui/icons-material/PieChartOutlineOutlined';
-import TimelineOutlinedIcon from '@mui/icons-material/TimelineOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-
-import { useSelector } from 'react-redux';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { getWithExpiry } from '../../util/localstorage';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -41,7 +36,7 @@ const Mysidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState('Dashboard');
 
-  const isLogin = useSelector((state) => state.session.user);
+  const isLogin = getWithExpiry('TOKEN');
 
   if (isLogin)
     return (
@@ -64,7 +59,7 @@ const Mysidebar = () => {
           },
         }}
       >
-        <Sidebar collapsed={isCollapsed}>
+        <Sidebar collapsed={isCollapsed} className="h-full">
           <Menu iconShape="square">
             {/* LOGO AND MENU ICON */}
             <MenuItem
@@ -128,89 +123,32 @@ const Mysidebar = () => {
                 setSelected={setSelected}
               />
 
-              <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: '15px 0 5px 20px' }}
-              >
-                Data
-              </Typography>
               <Item
-                title="Manage Team"
-                to="/team"
-                icon={<PeopleOutlinedIcon />}
+                title="Gestion utilisateur"
+                to="/users"
+                icon={<PersonOutlineIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="Contacts Information"
-                to="/contacts"
-                icon={<ContactsOutlinedIcon />}
+                title="Gestion Produit"
+                to="/produits"
+                icon={<CreditCardIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
+
               <Item
-                title="Invoices Balances"
-                to="/invoices"
+                title="Gestion OFs"
+                to="/ofs"
                 icon={<ReceiptOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
-
-              <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: '15px 0 5px 20px' }}
-              >
-                Pages
-              </Typography>
               <Item
-                title="Profile Form"
-                to="/form"
-                icon={<PersonOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Calendar"
-                to="/calendar"
-                icon={<CalendarTodayOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-
-              <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: '15px 0 5px 20px' }}
-              >
-                Charts
-              </Typography>
-              <Item
-                title="Pie Chart"
-                to="/pie"
-                icon={<PieChartOutlineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Line Chart CMS"
-                to="/lineCMS"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Line Chart TRAD"
-                to="/line"
-                icon={<TimelineOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Line Chart CABLAGE"
-                to="/lineCABLAGE"
-                icon={<TimelineOutlinedIcon />}
+                title="Gestion Defauts"
+                to="/defauts"
+                icon={<ReceiptOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
@@ -219,7 +157,6 @@ const Mysidebar = () => {
         </Sidebar>
       </Box>
     );
-  //t3rafch kifeh t3ytlha l page w yb9a fix l navbarr f ap
   else {
     return null;
   }
