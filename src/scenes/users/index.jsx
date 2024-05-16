@@ -49,6 +49,33 @@ const Users = () => {
     handleUsers();
   }, []);
   
+
+const deleteUser = async (userId) =>{
+  try {
+    const response = await fetch(`http://localhost:8080/api/user/`+userId, {
+      method: 'DELETE',
+
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+      },
+    });
+    handleUsers();
+
+    if (response.ok) {
+
+
+      // dispatch(usersActions.update(user));
+    } else {
+      throw Error(await response.text());
+    }
+  } catch (error) {
+    //   setFailed(true);
+    //   setPassword('');
+  }
+}
+
   return (
     <div className="mx-2">
       <h1> users </h1>
@@ -93,7 +120,7 @@ const Users = () => {
                 <EditIcon />
               </IconButton>
               <IconButton aria-label="delete">
-                <DeleteIcon />
+                <DeleteIcon  onClick={()=>deleteUser(user._id)} />
               </IconButton>
             </div>
           </Card>

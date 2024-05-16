@@ -11,10 +11,9 @@ import { sessionActions } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 
 const validationSchema = yup.object({
-  email: yup
-    .string('Enter your email')
-    .email('Enter a valid email')
-    .required('Email is required'),
+  matricule: yup
+    .string('Enter your matricule')
+    .required('matricule is required'),
   password: yup
     .string('Enter your password')
     .min(8, 'Password should be of minimum 8 characters length')
@@ -27,7 +26,7 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      email: '',
+      matricule: '',
       password: '',
     },
     validationSchema: validationSchema,
@@ -38,14 +37,14 @@ const Login = () => {
 
   const handlePasswordLogin = async (values) => {
     try {
-      const { email, password } = values;
+      const { matricule, password } = values;
       const response = await fetch(`http://localhost:8080/api/session`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ matricule, password }),
       });
       if (response.ok) {
         const user = await response.json();
@@ -72,14 +71,14 @@ const Login = () => {
         >
           <TextField
             fullWidth
-            id="email"
-            name="email"
-            label="Email"
-            value={formik.values.email}
+            id="matricule"
+            name="matricule"
+            label="matricule"
+            value={formik.values.matricule}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            error={formik.touched.matricule && Boolean(formik.errors.matricule)}
+            helperText={formik.touched.matricule && formik.errors.matricule}
           />
           <TextField
             fullWidth

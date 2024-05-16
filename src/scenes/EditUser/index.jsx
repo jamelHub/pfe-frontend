@@ -1,196 +1,195 @@
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Formik } from 'formik';
-import { Box, Button, TextField } from '@mui/material';
-import * as yup from 'yup';
-import { useFormik } from 'formik';
-import { setWithExpiry } from '../../util/localstorage';
+import React, { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useParams } from "react-router-dom";
+import {
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 
-import { useNavigate } from 'react-router-dom';
-import { usersActions } from '../../store';
-import { useDispatch } from 'react-redux';
 import { getWithExpiry } from '../../util/localstorage';
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useState } from 'react';
 
-const validationSchema = yup.object().shape({
-  email: yup
-    .string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  nom: yup
-    .string()
-    .min(2, 'Name must be at least 2 characters')
-    .max(50, 'Name must be at most 50 characters')
-    .required('Name is required'),
-  password: yup
-    .string()
-    .min(8, 'Password must be at least 8 characters')
-    .required('Password is required'),
-  matricule: yup
-    .string()
-    .matches(/^\d{4}-\d{4}-\d{4}$/, 'Invalid matricule format')
-    .required('Matricule is required'),
-  administrator: yup.boolean().required('Administrator status is required'),
-  responsable: yup.string().when('administrator', {
-    is: false,
-    then: yup.string().required('Responsable is required'),
-    otherwise: yup.string().notRequired(),
-  }),
-  departement: yup.string().required('Department is required'),
+const validationSchema = Yup.object({
+  matricule: Yup.string().required("Matricule is required"),
+  email: Yup.string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  password: Yup.string().required("Password is required"),
+  name: Yup.string().required("Name is required"),
+  departement: Yup.string().required("Departement is required"),
 });
 
-const EditUser = (props) => {
-  let { id } = useParams();
+const EditUser = () => {
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const [user, setUser] = useState([]);
-
-  const initUser = async () => {
-    try {
-      const response = await fetch(`http://localhost:8080/api/user/` + id, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
-        },
-      });
-      if (response.ok) {
-        const rs = await response.json();
-
-        setUser(rs);
-        // dispatch(usersActions.update(user));
-      } else {
-        throw Error(await response.text());
-      }
-    } catch (error) {
-      //   setFailed(true);
-      //   setPassword('');
-    }
-  };
+  console.log("id ", id);
 
   useEffect(() => {
-    initUser();
-  }, []);
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/user/${id}`, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+          },
+        });
+        const data = await response.json();
+
+        setUser(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [id]);
 
   const formik = useFormik({
     initialValues: {
-      email: '',
-      nom: '',
-      matricule: '',
-      password: '',
-      administrator: '',
-      responsable: '',
-      departement: '',
+      matricule: user ? user.matricule : "",
+      email: user ? user.email : "",
+      password: "",
+      name: user ? user.name : "",
+      responsable: user ? user.responsable : false,
+      administrator: user ? user.administrator : false,
+      departement: user ? user.departement : "",
     },
-    //    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handlePasswordLogin(values);
+    enableReinitialize: true,
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/user/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+
+          },
+          body: JSON.stringify(values),
+        });
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log("Success:", data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
     },
   });
-  const handlePasswordLogin = async (values) => {
-    try {
-      const {
-        email,
-        nom,
-        password,
-        matricule,
-        administrator,
-        departement,
-        responsable,
-      } = values;
-      const response = await fetch(`http://localhost:8080/api/user`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
-        },
-        body: JSON.stringify({
-          email,
-          nom,
-          password,
-          matricule,
-          administrator,
-          departement,
-          responsable,
-        }),
-      });
-      if (response.ok) {
-        const user = await response.json();
 
-        //  dispatch(usersActions.update(user));
-        navigate('/');
-      } else {
-        throw Error(await response.text());
-      }
-    } catch (error) {
-      //   setFailed(true);
-      //   setPassword('');
-    }
-  };
+  if (loading) {
+    return <CircularProgress />;
+  }
+
   return (
-    <div className="w-full flex justify-center my-16">
-      <form
-        onSubmit={formik.handleSubmit}
-        className="w-3/6 gap-3 flex flex-col ml-5 justify-center"
-      >
-        <h1 className="font-bold text-2xl text-center my-2">Create New User</h1>
-
+    <form
+      onSubmit={formik.handleSubmit}
+      className="p-6 bg-white rounded-lg shadow-md"
+    >
+      <div className="mb-4">
         <TextField
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
-        <TextField
-          fullWidth
-          id="nom"
-          name="nom"
-          label="nom"
-          value={formik.values.nom}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.nom && Boolean(formik.errors.nom)}
-          helperText={formik.touched.nom && formik.errors.nom}
-        />
-        <TextField
+          label="Matricule"
+          variant="outlined"
           fullWidth
           id="matricule"
           name="matricule"
-          label="matricule"
           value={formik.values.matricule}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.matricule && Boolean(formik.errors.matricule)}
           helperText={formik.touched.matricule && formik.errors.matricule}
         />
+      </div>
+      <div className="mb-4">
         <TextField
+          label="Email"
+          type="email"
+          variant="outlined"
+          fullWidth
+          id="email"
+          name="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        />
+      </div>
+      <div className="mb-4">
+        <TextField
+          label="Password"
+          type="password"
+          variant="outlined"
           fullWidth
           id="password"
           name="password"
-          label="Password"
-          type="password"
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
         />
+      </div>
+      <div className="mb-4">
         <TextField
+          label="Name"
+          variant="outlined"
+          fullWidth
+          id="name"
+          name="name"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
+      </div>
+      <div className="mb-4">
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="responsable"
+              name="responsable"
+              checked={formik.values.responsable}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          }
+          label="Responsable"
+        />
+      </div>
+      <div className="mb-4">
+        <FormControlLabel
+          control={
+            <Checkbox
+              id="administrator"
+              name="administrator"
+              checked={formik.values.administrator}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          }
+          label="Administrator"
+        />
+      </div>
+      <div className="mb-4">
+        <TextField
+          select
+          label="Departement"
+          variant="outlined"
           fullWidth
           id="departement"
           name="departement"
-          label="departement"
           value={formik.values.departement}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -198,41 +197,21 @@ const EditUser = (props) => {
             formik.touched.departement && Boolean(formik.errors.departement)
           }
           helperText={formik.touched.departement && formik.errors.departement}
-        />
-        <TextField
-          fullWidth
-          id="administrator"
-          name="administrator"
-          label="administrator"
-          value={formik.values.administrator}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.administrator && Boolean(formik.errors.administrator)
-          }
-          helperText={
-            formik.touched.administrator && formik.errors.administrator
-          }
-        />
-        <TextField
-          fullWidth
-          id="responsable"
-          name="responsable"
-          label="responsable"
-          value={formik.values.responsable}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.responsable && Boolean(formik.errors.responsable)
-          }
-          helperText={formik.touched.responsable && formik.errors.responsable}
-        />
-
-        <Button color="primary" variant="contained" fullWidth type="submit">
-          Submit
-        </Button>
-      </form>
-    </div>
+        >
+          <MenuItem value="CMS">CMS</MenuItem>
+          <MenuItem value="TRAD">TRAD</MenuItem>
+          <MenuItem value="CABLAGE">CABLAGE</MenuItem>
+        </TextField>
+      </div>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        className="mt-4"
+      >
+        Submit
+      </Button>
+    </form>
   );
 };
 
