@@ -11,6 +11,7 @@ import ConstraintForm from './scenes/constraints/ConstraintForm' ;
 import Login from './scenes/login';
 import SignUp from './scenes/login/SignUp';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { getWithExpiry } from './util/localstorage';
 
@@ -23,16 +24,14 @@ function App() {
 
   const checkLogin = async () => {
     try {
-      const response = await fetch(`http://35.173.177.99/api/user`, {
-        method: 'GET',
+      const response = await axios.get('http://107.23.59.78/isup', {
         headers: {
-          Accept: 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${getWithExpiry('TOKEN')}`, // JWT
+          'Authorization': `Bearer ${getWithExpiry('TOKEN')}`, // JWT
         },
       });
       if (response.ok) {
-        const user = await response.json();
 
         setIsLogin(true);
         navigate('/');

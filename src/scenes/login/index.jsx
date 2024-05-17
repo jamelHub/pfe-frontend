@@ -3,6 +3,8 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { setWithExpiry } from '../../util/localstorage';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 const validationSchema = yup.object({
   username: yup
@@ -31,17 +33,16 @@ const Login = () => {
   const handlePasswordLogin = async (values) => {
     try {
       const { username, password } = values;
-      const response = await fetch('http://35.173.177.99/login', {
-
-     //   mode: 'no-cors', 
-        method: 'POST',
-
-        body: JSON.stringify({ username, password }),
+      const response = await axios.post('http://107.23.59.78/login', {
+        username,
+        password
       });
-      if (response.ok) {
-        const user = await response.json();
+      console.log(" response ", response)
 
-        setWithExpiry('TOKEN', user.token.data, user.token.expiresIn);
+      if (response.status ==200) {
+        setWithExpiry('userToken', response.data.userToken);
+        setWithExpiry('kubeToken', response.data.kubeToken);
+
         navigate('/');
       } else {
         throw Error(await response.text());
@@ -63,7 +64,7 @@ const Login = () => {
         <h1 className='text-center font-bold text-4xl mb-12' > Welcome</h1>
         <form
           onSubmit={formik.handleSubmit}
-          className=" flex flex-col justify-between h-40 ml-5"
+          className=" flex flex-col justify-between h-40 ml-5 gap-2"
         >
           <TextField
             fullWidth

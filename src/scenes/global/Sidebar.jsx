@@ -9,6 +9,7 @@ import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { getWithExpiry } from '../../util/localstorage';
+import { setWithExpiry } from '../../util/localstorage';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -36,8 +37,17 @@ const Mysidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState('Dashboard');
 
- // const isLogin = getWithExpiry('TOKEN');
- const isLogin = true;
+  const isLogin = getWithExpiry('userToken');
+
+ //const isLogin = true;
+
+const logoutHandler= ()=>{
+  console.log("is logged out");
+  localStorage.removeItem('userToken');
+  localStorage.removeItem('kubeToken');
+
+}
+
 
   if (isLogin)
     return (
@@ -137,14 +147,19 @@ const Mysidebar = () => {
                 icon={<ContactsOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />       
-                <Item
+              />     
+              <div onClick={()=>{
+                  logoutHandler()
+                }}>
+              <Item
                 title="Log out"
-                to="/logout"
+                to="/login"
                 icon={<LogoutIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />   
+              /> 
+                </div>  
+              
             </Box>
           </Menu>
         </Sidebar>

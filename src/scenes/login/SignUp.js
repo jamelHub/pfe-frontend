@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+import axios from 'axios';
 
 
 const validationSchema = Yup.object().shape({
@@ -49,12 +50,12 @@ const SignUp = () => {
   const handleSignUp = async (values) => {
     try {
       const { name, age, email, password, confirmPassword } = values;
-      const response = await fetch('http://35.173.177.99/data', {
-
-        //mode: 'no-cors', 
-        method: 'POST',
-
-        body: JSON.stringify({ name, age, email, password, confirmPassword}),
+      const response = await axios.post('http://35.173.177.99/data', {
+        name,
+        age,
+        email,
+        password,
+        confirmPassword
       });
       if (response.ok) {
         const user = await response.json();
