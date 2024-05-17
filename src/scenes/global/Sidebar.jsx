@@ -8,6 +8,8 @@ import ContactsOutlinedIcon from '@mui/icons-material/ContactsOutlined';
 import ReceiptOutlinedIcon from '@mui/icons-material/ReceiptOutlined';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { getWithExpiry } from '../../util/localstorage';
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -34,8 +36,8 @@ const Mysidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState('Dashboard');
 
-  // const isLogin = useSelector((state) => state.session.user);
-  const isLogin = true;
+ // const isLogin = getWithExpiry('TOKEN');
+ const isLogin = true;
 
   if (isLogin)
     return (
@@ -105,9 +107,9 @@ const Mysidebar = () => {
                   >
                     Proxym
                   </Typography>
-                  <Typography variant="h5" color={colors.blueAccent[500]}>
-                    "Admin"
-                  </Typography>
+{/* <Typography variant="h5" color={colors.blueAccent[500]}>
+  "Admin"
+</Typography> */}
                 </Box>
               </Box>
             )}

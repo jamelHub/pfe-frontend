@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
   cpu: Yup.number().min(1, 'CPU must be greater than 1').required('CPU is required')
 });
 
-const TemplateForm = () => {
+const ConstraintForm = () => {
   const handleSubmit = (values) => {
     console.log(values);
   };
@@ -32,7 +32,7 @@ const TemplateForm = () => {
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema  } >
       {({ values, errors, touched, handleChange }) => (
         <Form className='w-3/6 m-auto my-20'>
-            <h1 className='text-3xl font-bold text-center my-8'> Create new Template</h1>
+            <h1 className='text-3xl font-bold text-center my-8'> Create new Constraint</h1>
           <Field
             as={TextField}
             select
@@ -100,4 +100,4 @@ const TemplateForm = () => {
   );
 };
 
-export default TemplateForm;
+export default ConstraintForm;

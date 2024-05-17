@@ -5,16 +5,13 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { Getworkouts } from "../../feature/WorkoutSlice";
-import { useNavigate } from "react-router-dom";
+
 
 const Team = () => {
 
 
 
- const workoutsState=useSelector((state)=>state.auth.user)
+ const workoutsState=true
   console.log(workoutsState);
 
   const theme = useTheme();

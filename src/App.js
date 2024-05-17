@@ -7,7 +7,9 @@ import Dashboard from './scenes/dashboard';
 import Templates from './scenes/templates';
 import TemplateForm from './scenes/templates/TemplateForm' ;
 import Constraints from './scenes/constraints';
+import ConstraintForm from './scenes/constraints/ConstraintForm' ;
 import Login from './scenes/login';
+import SignUp from './scenes/login/SignUp';
 import { useNavigate } from 'react-router-dom';
 
 import { getWithExpiry } from './util/localstorage';
@@ -21,7 +23,7 @@ function App() {
 
   const checkLogin = async () => {
     try {
-      const response = await fetch(`http://192.168.1.97:8080/api/user`, {
+      const response = await fetch(`http://35.173.177.99/api/user`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -63,9 +65,12 @@ function App() {
             <Routes>
               <Route path="/" element={< Dashboard/>} />
               <Route path="/login" element={<Login />}  />
+              <Route path="/signup" element={<SignUp />} /> 
+
               <Route path="/templates" element={<Templates />} />
               <Route path="/templates/create" element={<TemplateForm />} />
               <Route path="/constraints" element={<Constraints />} />
+              <Route path="/constraints/create" element={<ConstraintForm />} />
   
             </Routes>
           </main>
