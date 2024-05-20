@@ -72,14 +72,14 @@ const deleteDefaut = async (defautId) =>{
 
   return (
     <div className="mx-2">
-      <h1> users </h1>
+      <h1> defauts </h1>
 
       <div className="w-full flex justify-end p-4">
         <Button
           color="primary"
           variant="contained"
           onClick={() => {
-            navigate('/users/create');
+            navigate('/defauts/create');
           }}
         >
           Create new Defauts

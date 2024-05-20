@@ -23,6 +23,9 @@ import EditOf from "./scenes/EditOf";
 import ProduitForm from "./scenes/ProduitForm";
 import EditProduit from "./scenes/EditProduit";
 
+import DefautForm from "./scenes/DefautForm";
+import EditDefaut from "./scenes/EditDefaut";
+
 
 import { getWithExpiry } from "./util/localstorage";
 
@@ -73,7 +76,6 @@ function App() {
           {true && <Mysidebar isSidebar={isSidebar} isLogin={isLogin} />}
 
           <main className="h-full w-full ">
-            {true && <Topbar setIsSidebar={setIsSidebar} isLogin={isLogin} />}
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/login" element={<Login />} />
@@ -90,8 +92,8 @@ function App() {
               <Route path="/produits/edit/:id" element={<EditProduit />} /> 
 
               <Route path="/defauts" element={<Defauts />} />
-             {/*  <Route path="/defauts/create" element={<DefautForm />} />
-              <Route path="/defauts/edit/:id" element={<EditDefaut />} />  */}
+              <Route path="/defauts/create" element={<DefautForm />} />
+              <Route path="/defauts/edit/:id" element={<EditDefaut />} />  
             </Routes>
           </main>
         </div>
