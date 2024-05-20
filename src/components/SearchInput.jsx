@@ -163,6 +163,7 @@ export default function Searchinput({
   produits,
   selectedProduit,
   productsValues,
+  title
 }) {
   const {
     getRootProps,
@@ -190,7 +191,7 @@ export default function Searchinput({
   return (
     <Root>
       <div {...getRootProps()}>
-        <Label {...getInputLabelProps()}>Produits</Label>
+        <Label {...getInputLabelProps()}>{title}</Label>
         <InputWrapper ref={setAnchorEl} className={focused ? "focused" : ""}>
           {value.map((option, index) => (
             <StyledTag label={option?.name} {...getTagProps({ index })} />

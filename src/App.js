@@ -15,6 +15,9 @@ import { useNavigate } from 'react-router-dom';
 import UserForm from './scenes/UserForm';
 import EditUser from './scenes/EditUser';
 
+import OfForm from './scenes/OfForm';
+import EditOf from './scenes/EditOf';
+
 import { getWithExpiry } from './util/localstorage';
 
 function App() {
@@ -70,9 +73,14 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/users" element={<Users />} />
               <Route path="/users/create" element={<UserForm />} />
-              <Route path="users/edit/:id" element={<EditUser />} />
+              <Route path="/users/edit/:id" element={<EditUser />} />
+
+
 
               <Route path="/ofs" element={<Ofs />} />
+              <Route path="/ofs/create" element={<OfForm />} />
+              <Route path="/ofs/edit/:id" element={<EditOf />} />
+
               <Route path="/produits" element={<Produits />} />
 
               {/*               <Route path="/produits/:id" element={<AgencyPage />} />

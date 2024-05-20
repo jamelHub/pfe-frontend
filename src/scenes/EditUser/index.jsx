@@ -240,6 +240,8 @@ const EditUser = () => {
           produits={produits}
           selectedProduit={user.produits}
           productsValues={handleProducts}
+          title="Produits"
+
         />
       )} 
       <Button
