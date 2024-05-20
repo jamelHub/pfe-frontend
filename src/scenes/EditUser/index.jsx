@@ -11,16 +11,21 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import { getWithExpiry } from '../../util/localstorage';
+import { getWithExpiry } from "../../util/localstorage";
+
+import { useNavigate } from 'react-router-dom';
+
+
+import Searchinput from "../../components/SearchInput";
 
 const validationSchema = Yup.object({
   matricule: Yup.string().required("Matricule is required"),
+  name: Yup.string().required("Name is required"),
   email: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
-  password: Yup.string().required("Password is required"),
-  name: Yup.string().required("Name is required"),
   departement: Yup.string().required("Departement is required"),
+  responsable: Yup.string().required("responsable is required"),
 });
 
 const EditUser = () => {
@@ -28,16 +33,40 @@ const EditUser = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  console.log("id ", id);
+  const [produits, setProduits] = useState([]);
+
+  const [productIds, setProductsIds] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProduits();
+  }, []);
+
+  const fetchProduits = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/produits`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+        },
+      });
+      const data = await response.json();
+
+      setProduits(data);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/user/${id}`, {
+        const response = await fetch(`http://localhost:8080/api/users/${id}`, {
           headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
           },
         });
         const data = await response.json();
@@ -57,7 +86,6 @@ const EditUser = () => {
     initialValues: {
       matricule: user ? user.matricule : "",
       email: user ? user.email : "",
-      password: "",
       name: user ? user.name : "",
       responsable: user ? user.responsable : false,
       administrator: user ? user.administrator : false,
@@ -67,19 +95,26 @@ const EditUser = () => {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       try {
-        const response = await fetch(`http://localhost:8080/api/user/${id}`, {
+        const updated = {
+          ...values,
+          produits: productIds,
+        };
+
+        console.log(" updated data ", updated);
+        const response = await fetch(`http://localhost:8080/api/users/${id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
-
+            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(updated),
         });
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        navigate('/users');
+
         console.log("Success:", data);
       } catch (error) {
         console.error("Error:", error);
@@ -90,6 +125,16 @@ const EditUser = () => {
   if (loading) {
     return <CircularProgress />;
   }
+
+  const handleProducts = (data) => {
+    let listProduct = [];
+    data.map((product) => {
+      if (product?._id) {
+        listProduct.push(product?._id);
+      }
+    });
+    setProductsIds(listProduct);
+  };
 
   return (
     <form
@@ -125,21 +170,7 @@ const EditUser = () => {
           helperText={formik.touched.email && formik.errors.email}
         />
       </div>
-      <div className="mb-4">
-        <TextField
-          label="Password"
-          type="password"
-          variant="outlined"
-          fullWidth
-          id="password"
-          name="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
-      </div>
+
       <div className="mb-4">
         <TextField
           label="Name"
@@ -203,11 +234,19 @@ const EditUser = () => {
           <MenuItem value="CABLAGE">CABLAGE</MenuItem>
         </TextField>
       </div>
+
+       {produits && (
+        <Searchinput
+          produits={produits}
+          selectedProduit={user.produits}
+          productsValues={handleProducts}
+        />
+      )} 
       <Button
         type="submit"
         variant="contained"
         color="primary"
-        className="mt-4"
+        className="my-8 py-8"
       >
         Submit
       </Button>

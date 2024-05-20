@@ -24,7 +24,7 @@ const Users = () => {
   const [user, setUser] = useState([]);
   const handleUsers = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user`, {
+      const response = await fetch(`http://localhost:8080/api/users`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -36,6 +36,7 @@ const Users = () => {
 
         setUser(rs);
         console.log('users', user);
+
         // dispatch(usersActions.update(user));
       } else {
         throw Error(await response.text());

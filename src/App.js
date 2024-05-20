@@ -26,7 +26,7 @@ function App() {
 
   const checkLogin = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user`, {
+      const response = await fetch(`http://localhost:8080/api/users`, {
         method: 'GET',
         headers: {
           Accept: 'application/json',
