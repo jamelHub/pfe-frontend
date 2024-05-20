@@ -64,9 +64,6 @@ const deleteUser = async (userId) =>{
     handleUsers();
 
     if (response.ok) {
-
-
-      // dispatch(usersActions.update(user));
     } else {
       throw Error(await response.text());
     }

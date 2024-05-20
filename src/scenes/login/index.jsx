@@ -9,6 +9,7 @@ import { setWithExpiry } from '../../util/localstorage';
 import { useNavigate } from 'react-router-dom';
 import { sessionActions } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 
 const validationSchema = yup.object({
   matricule: yup
@@ -23,6 +24,9 @@ const validationSchema = yup.object({
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+
+  const [failed,setFailed]= useState('')
 
   const formik = useFormik({
     initialValues: {
@@ -53,11 +57,11 @@ const Login = () => {
         dispatch(sessionActions.updateUser(user));
         navigate('/');
       } else {
-        throw Error(await response.text());
+        throw Error(await response.json());
       }
     } catch (error) {
-      //   setFailed(true);
-      //   setPassword('');
+        setFailed("Login Failed");
+
     }
   };
 
@@ -95,6 +99,8 @@ const Login = () => {
           <Button color="primary" variant="contained" fullWidth type="submit">
             Submit
           </Button>
+
+          {failed && <p className='text-red-500	'> {failed}</p>}
         </form>
       </div>
     </div>
