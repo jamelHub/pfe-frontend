@@ -12,31 +12,35 @@ import {
 } from "@mui/material";
 
 import { getWithExpiry } from "../../util/localstorage";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 import Searchinput from "../../components/SearchInput";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
+  description: Yup.string().required("Description is required"),
+
+
 });
 
-const EditUser = () => {
+const FormProduit = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [produits, setProduit] = useState(null);
 
-  const [departements, setDepartements] = useState([]);
+  const [ofs, setofs] = useState([]);
 
-  const [departementIds, setDepartementsIds] = useState([]);
+  const [productIds, setOfsIds] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchDepartement();
+    fetchProduits();
   }, []);
 
-  const fetchDepartement = async () => {
+  const fetchProduits = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/departements`, {
+      const response = await fetch(`http://localhost:8080/api/ofs`, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -45,7 +49,7 @@ const EditUser = () => {
       });
       const data = await response.json();
 
-      setDepartements(data);
+      setofs(data);
     } catch (error) {
       console.error("Error fetching user:", error);
     }
@@ -54,7 +58,7 @@ const EditUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/ofs/${id}`, {
+        const response = await fetch(`http://localhost:8080/api/produits/${id}`, {
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
@@ -63,8 +67,9 @@ const EditUser = () => {
         });
         const data = await response.json();
 
-        setUser(data);
+        setProduit(data);
         setLoading(false);
+        
       } catch (error) {
         console.error("Error fetching user:", error);
         setLoading(false);
@@ -76,7 +81,9 @@ const EditUser = () => {
 
   const formik = useFormik({
     initialValues: {
+      description: "",
       name: "",
+ 
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -84,10 +91,10 @@ const EditUser = () => {
       try {
         const updated = {
           ...values,
-          departements: departementIds,
+          produits: productIds,
         };
 
-        const response = await fetch(`http://localhost:8080/api/ofs`, {
+        const response = await fetch(`http://localhost:8080/api/produits`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -99,7 +106,7 @@ const EditUser = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        navigate("/ofs");
+        navigate('/produits');
       } catch (error) {
         console.error("Error:", error);
       }
@@ -110,14 +117,14 @@ const EditUser = () => {
     return <CircularProgress />;
   }
 
-  const handleProducts = (data) => {
-    let listdepartements = [];
+  const handleOfs = (data) => {
+    let listProduct = [];
     data.map((product) => {
       if (product?._id) {
-        listdepartements.push(product?._id);
+        listProduct.push(product?._id);
       }
     });
-    setDepartementsIds(listdepartements);
+    setOfsIds(listProduct);
   };
 
   return (
@@ -125,6 +132,22 @@ const EditUser = () => {
       onSubmit={formik.handleSubmit}
       className="p-6 bg-white rounded-lg shadow-md"
     >
+      <div className="mb-4">
+        <TextField
+          label="Description"
+          variant="outlined"
+          fullWidth
+          id="description"
+          name="description"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.description && Boolean(formik.errors.description)}
+          helperText={formik.touched.description && formik.errors.description}
+        />
+      </div>
+
+
       <div className="mb-4">
         <TextField
           label="Name"
@@ -140,12 +163,14 @@ const EditUser = () => {
         />
       </div>
 
-      {departements && (
+ 
+  
+      {ofs && (
         <Searchinput
-        title = "Departements"
-          produits={departements}
-          selectedProduit={user.departements}
-          productsValues={handleProducts}
+          produits={ofs}
+          selectedProduit={produits.ofs}
+          productsValues={handleOfs}
+          title="Ofs"
         />
       )}
       <Button
@@ -160,4 +185,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default FormProduit;
