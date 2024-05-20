@@ -90,6 +90,8 @@ function App() {
               <Route path="/produits/edit/:id" element={<EditProduit />} /> 
 
               <Route path="/defauts" element={<Defauts />} />
+             {/*  <Route path="/defauts/create" element={<DefautForm />} />
+              <Route path="/defauts/edit/:id" element={<EditDefaut />} />  */}
             </Routes>
           </main>
         </div>
