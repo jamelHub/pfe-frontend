@@ -10,6 +10,8 @@ import IconButton from '@mui/material/IconButton';
 const TitleUser = [
   'Nom',
   'Description',
+  "Actions"
+
 
 ];
 

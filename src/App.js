@@ -21,6 +21,8 @@ import EditOf from "./scenes/EditOf";
 
 
 import ProduitForm from "./scenes/ProduitForm";
+import EditProduit from "./scenes/EditProduit";
+
 
 import { getWithExpiry } from "./util/localstorage";
 
@@ -84,9 +86,8 @@ function App() {
               <Route path="/ofs/edit/:id" element={<EditOf />} />
 
               <Route path="/produits" element={<Produits />} />
-
               <Route path="/produits/create" element={<ProduitForm />} />
-              {/* <Route path="/produits/edit/:id" element={<EditProduit />} /> */}
+              <Route path="/produits/edit/:id" element={<EditProduit />} /> 
 
               <Route path="/defauts" element={<Defauts />} />
             </Routes>

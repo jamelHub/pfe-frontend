@@ -10,6 +10,7 @@ import { usersActions } from "../../store";
 import IconButton from "@mui/material/IconButton";
 const TitleUser = [
   "Nom",
+  "Actions"
   
 ];
 
