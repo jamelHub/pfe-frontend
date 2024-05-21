@@ -6,12 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Constraints = () => {
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
 
   const theme = useTheme();
-  
-
   return (
     <Box >
       <Header title="Constraints" />
@@ -25,7 +22,8 @@ const Constraints = () => {
 
     </div>
 
-  <Card></Card>
+  <Card>
+  </Card>
     </Box>
   );
 };
