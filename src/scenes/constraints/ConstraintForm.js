@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField, MenuItem, Button } from '@mui/material';
 import * as Yup from 'yup';
-import { Memory, DeveloperBoard } from '@mui/icons-material';
+import { DeveloperBoard } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import List from '@mui/material/List';
@@ -18,39 +18,38 @@ import { FormControl, InputLabel, Select, Box } from '@mui/material';
 
 
 
-const namespaces = [
+const templates = [
   { value: 'gatekeeper-system', label: 'Gatekeeper System' },
   { value: 'ingress-nginx', label: 'Ingress Nginx' },
   { value: 'kubernetes', label: 'Kubernetes' }
 ];
 
 const initialValues = {
-  namespace: '',
-  memory: '',
-  cpu: ''
+  name: '',
+  description: '',
+  template: ''
 };
 
 
 const validationSchema = Yup.object().shape({
-  namespace: Yup.string().required('Namespace is required'),
-  memory: Yup.number().min(1, 'Memory must be greater than 1').required('Memory is required'),
-  cpu: Yup.number().min(1, 'CPU must be greater than 1').required('CPU is required')
+  name: Yup.string().required('Name is required'),
+  template: Yup.number().min(1, 'CPU must be greater than 1').required('CPU is required')
 });
 
 const ConstraintForm = () => {
   const [selectedIndex, setSelectedIndex] = useState(1);
 
   const [scope, setScope] = useState('');
-  const [namespace, setNamespace] = useState('');
+  const [name, setName] = useState('');
   const [api, setApi] = useState('');
   const [kind, setKind] = useState('');
 
 
-const [disabledApi,setDisabledApi]=useState(true)
-const [disabledKind,setDisabledKind]=useState(true)
+  const [disabledApi, setDisabledApi] = useState(true)
+  const [disabledKind, setDisabledKind] = useState(true)
 
 
-  const [excludedNamespaces, setExcludedNamespaces] = useState('');
+  const [excludedtemplates, setExcludedtemplates] = useState('');
 
   const handleSubmit = (values) => {
     console.log(values);
@@ -67,16 +66,16 @@ const [disabledKind,setDisabledKind]=useState(true)
     setApi(event.target.value);
   };
 
-  
+
   const handleKindChange = (event) => {
     setKind(event.target.value);
   };
-  const handleNamespaceChange = (event) => {
-    setNamespace(event.target.value);
+  const handleNameChange = (event) => {
+    setName(event.target.value);
   };
 
-  const handleExcludedNamespacesChange = (event) => {
-    setExcludedNamespaces(event.target.value);
+  const handleExcludedtemplatesChange = (event) => {
+    setExcludedtemplates(event.target.value);
   };
 
 
@@ -84,64 +83,65 @@ const [disabledKind,setDisabledKind]=useState(true)
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit} validationSchema={validationSchema} >
       {({ values, errors, touched, handleChange }) => (
-        <Form className='w-4/6 m-auto my-20'>
+        <Form className="w-5/6">
           <h1 className='text-3xl font-bold text-center my-8'> Create new Constraint</h1>
-          <div className='flex  gap-5'>
-            <Field
-              as={TextField}
-              select
-              name="namespace"
-              label="Namespace"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              value={values.namespace}
-              error={touched.namespace && !!errors.namespace}
-              helperText={touched.namespace && errors.namespace}
-              onChange={handleChange}
-              required
-            >
-              {namespaces.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </Field>
-            <Field
-              as={TextField}
-              type="number"
-              name="memory"
-              label="Memory"
-              variant="outlined"
-              margin="normal"
-              fullWidth
-              InputProps={{
-                endAdornment: <InputAdornment position="end"><Memory /></InputAdornment>,
-              }}
-              error={touched.memory && !!errors.memory}
-              helperText={touched.memory && errors.memory}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <div className='w-full   flex  pl-4 gap-5'>
+            <div className="flex" style={{ flex: 1 }}>
 
+              <Field
+                as={TextField}
+                type="text"
+                name="name"
+                label="Name"
+                variant="outlined"
+                margin="normal"
+                fullWidth
+
+                error={touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="flex" style={{ flex: 2 }}>
+
+              <Field
+                as={TextField}
+                type="text"
+                name="description"
+                label="Description"
+                variant="outlined"
+                margin="normal"
+                fullWidth
+                error={touched.description && !!errors.description}
+                helperText={touched.description && errors.description}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          <div className='w-full   flex  pl-4 gap-5'>
           <Field
             as={TextField}
-            type="number"
-            name="cpu"
-            label="CPU"
+            select
+            name="template"
+            label="Template"
             variant="outlined"
             margin="normal"
             fullWidth
-            InputProps={{
-              endAdornment: <InputAdornment position="end"><DeveloperBoard /></InputAdornment>,
-            }}
-            error={touched.cpu && !!errors.cpu}
-            helperText={touched.cpu && errors.cpu}
+            value={values.template}
+            error={touched.template && !!errors.template}
+            helperText={touched.template && errors.template}
             onChange={handleChange}
             required
-          />
-
+          >
+            {templates.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Field>
+          </div>
           <div className='flex w-full'>
             <div className=' w-2/6'>
 
@@ -152,7 +152,7 @@ const [disabledKind,setDisabledKind]=useState(true)
                     <ListItemIcon>
                       <InboxIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Namespace" />
+                    <ListItemText primary="Namespaces" />
                   </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -185,18 +185,18 @@ const [disabledKind,setDisabledKind]=useState(true)
 
 
               <TextField
-                id="namespace"
-                label="Namespace"
-                value={namespace}
-                onChange={handleNamespaceChange}
+                id="name"
+                label="Name"
+                value={name}
+                onChange={handleNameChange}
                 fullWidth
               />
 
               <TextField
-                id="ExcludedNamespaces"
-                label="Excluded Namespaces"
-                value={excludedNamespaces}
-                onChange={handleExcludedNamespacesChange}
+                id="Excludedtemplates"
+                label="Excluded templates"
+                value={excludedtemplates}
+                onChange={handleExcludedtemplatesChange}
                 fullWidth
               />
 
@@ -210,7 +210,7 @@ const [disabledKind,setDisabledKind]=useState(true)
                 <div className='flex border w-full border-gray-400'>
                   <div className='h-full  '>
 
-                    <Button  variant="contained"  onClick={()=>setDisabledApi(false)} >add api</Button>
+                    <Button variant="contained" onClick={() => setDisabledApi(false)} >add api</Button>
 
                   </div>
 
@@ -223,31 +223,31 @@ const [disabledKind,setDisabledKind]=useState(true)
                     fullWidth
                   />
 
-<div className=''>
+                  <div className=''>
 
-<Button    variant="contained"  onClick={()=>setDisabledKind(false)} >Add Kind</Button>
+                    <Button variant="contained" onClick={() => setDisabledKind(false)} >Add Kind</Button>
 
-</div>
+                  </div>
 
-<TextField
-id="Kind"
-label="Kind"
-value={kind}
-onChange={handleKindChange}
-disabled={disabledKind}
-fullWidth
-/>
+                  <TextField
+                    id="Kind"
+                    label="Kind"
+                    value={kind}
+                    onChange={handleKindChange}
+                    disabled={disabledKind}
+                    fullWidth
+                  />
                 </div>
-         
-         
+
+
               </div>
-            
+
               <div className='ml-4 mt-4'>
-              <Button type="submit"  className='m-4' variant="contained" color="primary">
-              Add role
-            </Button>
-                </div>
-            
+                <Button type="submit" className='m-4' variant="contained" color="primary">
+                  Add role
+                </Button>
+              </div>
+
             </div>
 
 

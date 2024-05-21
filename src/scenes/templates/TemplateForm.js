@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { Memory, DeveloperBoard } from '@mui/icons-material';
 import InputAdornment from '@mui/material/InputAdornment';
 
-const namespaces = [
+const templates = [
   { value: 'gatekeeper-system', label: 'Gatekeeper System' },
   { value: 'ingress-nginx', label: 'Ingress Nginx' },
   { value: 'kubernetes', label: 'Kubernetes' }
@@ -47,7 +47,7 @@ const TemplateForm = () => {
             onChange={handleChange}
             required
           >
-            {namespaces.map((option) => (
+            {templates.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>

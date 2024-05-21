@@ -33,7 +33,7 @@ const Login = () => {
   const handlePasswordLogin = async (values) => {
     try {
       const { username, password } = values;
-      const response = await axios.post('http://34.230.42.108/login', {
+      const response = await axios.post('http://44.203.173.2/login', {
         username,
         password
       });
@@ -93,18 +93,7 @@ const Login = () => {
           >
             Submit
           </Button>
-          <Box mt={2} textAlign="center">
-            New to us?{' '}
-            <Link
-              color="teal"
-              underline="hover"
-              onClick={() => {
-                navigate('/signup');
-              }}
-            >
-              Sign Up
-            </Link>
-          </Box>
+          
         </form>
 
       </div>
