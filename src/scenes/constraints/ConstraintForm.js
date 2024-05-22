@@ -10,9 +10,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 import InboxIcon from '@mui/icons-material/Inbox';
-import DraftsIcon from '@mui/icons-material/Drafts';
 
 import { FormControl, InputLabel, Select, Box } from '@mui/material';
 
@@ -33,7 +31,7 @@ const initialValues = {
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
-  template: Yup.number().min(1, 'CPU must be greater than 1').required('CPU is required')
+  template: Yup.string().required('Template is required')
 });
 
 const ConstraintForm = () => {
@@ -116,7 +114,7 @@ const ConstraintForm = () => {
                 error={touched.description && !!errors.description}
                 helperText={touched.description && errors.description}
                 onChange={handleChange}
-                required
+              
               />
             </div>
           </div>
