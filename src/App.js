@@ -20,7 +20,7 @@ function App() {
   const navigate = useNavigate();
 
   const [isLogin, setIsLogin] = useState(true);
-
+/*
   const checkLogin = async () => {
     try {
       const response = await axios.get('http://107.23.59.78/isup', {
@@ -50,7 +50,7 @@ function App() {
   useEffect(() => {
     checkLogin();
   }, []);
-
+*/
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={Theme}>
