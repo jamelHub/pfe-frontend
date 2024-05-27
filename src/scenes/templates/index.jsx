@@ -35,7 +35,7 @@ const Templates = () => {
       });
       
   }, []);
-  const baseUrl = 'http://3.82.219.248/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates/';
+/*   const baseUrl = 'http://3.82.219.248/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates/';
 
   // Function to delete a constraint template by name
   function deleteConstraintTemplate(resourceName) {
@@ -78,7 +78,7 @@ const Templates = () => {
   
   // Example: Dynamically setting the resource name
   dynamicResourceName = 'anotherResourceName';
-  deleteConstraintTemplate(dynamicResourceName);
+  deleteConstraintTemplate(dynamicResourceName); */
   
   const list = names.map(obj => obj.metadata.name);
 
