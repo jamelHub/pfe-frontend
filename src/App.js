@@ -56,7 +56,7 @@ function App() {
       <ThemeProvider theme={Theme}>
         <CssBaseline />
 
-        <div className="flex relative  h-screen w-screen">
+        <div className="flex relative  h-screen ">
             <Mysidebar isSidebar={isSidebar}   />
 
           <main className="h-full w-full ">

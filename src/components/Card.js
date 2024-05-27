@@ -4,11 +4,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 
 
-const Card = () => {
+const Card = ({name}) => {
 
-    return (<div className="w-full flex h-16  border-collapse bg-gray-100 border-gray-400 border-1 hover:shadow-xl  hover:bg-gray-200 justify-between">
+    return (<div className="w-full flex h-16   border-collapse bg-gray-100 border-gray-400 border-1 hover:shadow-xl  hover:bg-gray-200 justify-between">
         <div className='p-4'>
-            <h1> title </h1>
+            <h1> {name} </h1>
         </div>
 
         <div className="flex gap-4 p-4">
@@ -19,7 +19,7 @@ const Card = () => {
             </div>
             <div>
 
-                <IconButton color="primary" aria-label="add to shopping cart">
+                <IconButton color="primary" aria-label="add to shopping cart" onClick={() => { Card(name) }} >
                     <DeleteIcon />
                 </IconButton>
             </div>
