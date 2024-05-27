@@ -7,9 +7,6 @@ import { saveAs } from 'file-saver';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
-import yaml from 'js-yaml';
-import { saveAs } from 'file-saver';
-
 const TemplateForm = () => {
   const initialYamlTemplate = `
 apiVersion: templates.gatekeeper.sh/v1
@@ -151,7 +148,6 @@ if( response.status >= 200 && response.status < 300)
       
       
       else if (line.includes('<TARGETS_PLACEHOLDER>')) {
-      } else if (line.includes('<TARGETS_PLACEHOLDER>')) {
         return (
           <div key={index} className="flex">
             <span className="w-10 text-right mr-4 text-gray-500">{index + 1}</span>
