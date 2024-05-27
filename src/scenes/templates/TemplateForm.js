@@ -51,7 +51,7 @@ console.log("crd ", crd);
 console.log("targets ", targets);
 
 
-    const url = 'http://3.82.219.248/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates/';
+    const url = 'http://100.24.19.105/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates/';
     const data = {
       "apiVersion": "templates.gatekeeper.sh/v1beta1",
       "kind": "ConstraintTemplate",
@@ -103,6 +103,7 @@ if( response.status >= 200 && response.status < 300)
       });
 
   }
+
 
 
   const renderYamlWithInputs = (yamlString) => {
@@ -196,11 +197,16 @@ if( response.status >= 200 && response.status < 300)
       >
         Generate Template
       </button>
-      <div className="mx-2 my-8">
+      <div className="mx-2 my-8 flex w-full justify-end gap-5">
         <Button color="primary" variant="contained" className="float-right m-4"
           onClick={() => { createTemplate() }} >
           Create </Button>
-
+          <Button variant="contained" color="error" onClick={()=>{
+            navigate("/templates")
+          }}>
+              Cancel
+            </Button>
+     
       </div>
     </div>
 

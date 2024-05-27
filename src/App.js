@@ -18,27 +18,23 @@ function App() {
   const [Theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
   const navigate = useNavigate();
-
+/* 
   const [isLogin, setIsLogin] = useState(true);
-/*
+
   const checkLogin = async () => {
     try {
-      const response = await axios.get('http://107.23.59.78/isup', {
+      const response = await axios.get('http://100.24.19.105/login', {
         headers: {
-          'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getWithExpiry('TOKEN')}`, // JWT
+          'Authorization': `Bearer ${getWithExpiry('userToken')}`, // JWT
         },
       });
       if (response.ok) {
-
         setIsLogin(true);
         navigate('/');
-
       } else {
         setIsLogin(false);
         navigate('/login');
-        throw Error(await response.text());
       }
     } catch (error) {
       setIsLogin(false);
@@ -50,7 +46,7 @@ function App() {
   useEffect(() => {
     checkLogin();
   }, []);
-*/
+ */
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={Theme}>

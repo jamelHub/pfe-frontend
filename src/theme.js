@@ -25,7 +25,7 @@ export const tokens = (mode) => ({
           600: "#101624",
           700: "#0c101b",
           800: "#080b12",
-          900: "#040509",
+          900: "#2563eb",
         },
         greenAccent: {
           100: "#dbf5ee",
@@ -82,7 +82,7 @@ export const tokens = (mode) => ({
           600: "#1F2A40",
           700: "#727681",
           800: "#a1a4ab",
-          900: "#d0d1d5",
+          900: "#2563eb",
         },
         greenAccent: {
           100: "#0f2922",
@@ -155,7 +155,7 @@ export const themeSettings = (mode) => {
         : {
             // palette values for light mode
             primary: {
-              main: colors.primary[100],
+              main: colors.primary[900],
             },
             secondary: {
               main: colors.greenAccent[500],
