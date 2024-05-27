@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+<<<<<<< HEAD
 import { getWithExpiry } from '../../util/localstorage';
 
 import axios from 'axios';
@@ -6,24 +7,37 @@ import yaml from 'js-yaml';
 import { saveAs } from 'file-saver';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
+=======
+import yaml from 'js-yaml';
+import { saveAs } from 'file-saver';
+>>>>>>> a68c17ce37022d76cdde6a79c6d750d2a12e7f6f
 
 const TemplateForm = () => {
   const initialYamlTemplate = `
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
+<<<<<<< HEAD
   name: <NAME_PLACEHOLDER>
+=======
+  name: placeholder
+>>>>>>> a68c17ce37022d76cdde6a79c6d750d2a12e7f6f
   annotations: key:string
   labels: key:string
 spec:
   crd: <CRD_PLACEHOLDER>
   targets: <TARGETS_PLACEHOLDER>
 `;
+<<<<<<< HEAD
   const navigate = useNavigate();
 
   const [crd, setCrd] = useState('');
   const [name, setName] = useState('');
 
+=======
+
+  const [crd, setCrd] = useState('');
+>>>>>>> a68c17ce37022d76cdde6a79c6d750d2a12e7f6f
   const [targets, setTargets] = useState('');
 
   const handleGenerateTemplate = () => {
@@ -38,6 +52,7 @@ spec:
     saveAs(blob, 'new-template.yaml');
   };
 
+<<<<<<< HEAD
 
 
 
@@ -105,6 +120,8 @@ if( response.status >= 200 && response.status < 300)
   }
 
 
+=======
+>>>>>>> a68c17ce37022d76cdde6a79c6d750d2a12e7f6f
   const renderYamlWithInputs = (yamlString) => {
     return yamlString.split('\n').map((line, index) => {
       if (line.includes('<CRD_PLACEHOLDER>')) {
@@ -124,6 +141,7 @@ if( response.status >= 200 && response.status < 300)
             </span>
           </div>
         );
+<<<<<<< HEAD
       } 
       
         if (line.includes('<NAME_PLACEHOLDER>')) {
@@ -148,6 +166,9 @@ if( response.status >= 200 && response.status < 300)
       
       
       else if (line.includes('<TARGETS_PLACEHOLDER>')) {
+=======
+      } else if (line.includes('<TARGETS_PLACEHOLDER>')) {
+>>>>>>> a68c17ce37022d76cdde6a79c6d750d2a12e7f6f
         return (
           <div key={index} className="flex">
             <span className="w-10 text-right mr-4 text-gray-500">{index + 1}</span>
@@ -166,6 +187,7 @@ if( response.status >= 200 && response.status < 300)
             </span>
           </div>
         );
+<<<<<<< HEAD
    
    
    
@@ -174,6 +196,9 @@ if( response.status >= 200 && response.status < 300)
     
       
       else {
+=======
+      } else {
+>>>>>>> a68c17ce37022d76cdde6a79c6d750d2a12e7f6f
         return (
           <div key={index} className="flex">
             <span className="w-10 text-right mr-4 text-gray-500">{index + 1}</span>
@@ -196,6 +221,7 @@ if( response.status >= 200 && response.status < 300)
       >
         Generate Template
       </button>
+<<<<<<< HEAD
       <div className="mx-2 my-8">
         <Button color="primary" variant="contained" className="float-right m-4"
           onClick={() => { createTemplate() }} >
@@ -204,6 +230,9 @@ if( response.status >= 200 && response.status < 300)
       </div>
     </div>
 
+=======
+    </div>
+>>>>>>> a68c17ce37022d76cdde6a79c6d750d2a12e7f6f
   );
 };
 
