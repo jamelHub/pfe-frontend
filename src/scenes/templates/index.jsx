@@ -14,7 +14,7 @@ const Templates = () => {
   const [names, setNames] = useState([])
   useEffect(() => {
     // Base URL
-    const baseUrl = 'http://100.24.19.105/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates/';
+    const baseUrl = `http://${process.env.PUBLIC_URL}/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates`;
 
     // Make the GET request using Axios
     axios.get(baseUrl, {
@@ -39,10 +39,10 @@ const Templates = () => {
 
   function deleteConstraintTemplate(nameTemplate) {
     console.log("name Template ", nameTemplate)
-    const baseUrl = 'http://100.24.19.105/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates/';
+    const baseUrl = `http://${process.env.PUBLIC_URL}/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates/`;
 
     // Construct the full URL including the resource nameTemplate
-    const deleteUrl = `${baseUrl}${nameTemplate}`;
+    const deleteUrl = `${baseUrl}${nameTemplate}` ;
 
     // Make the DELETE request using Axios
     axios.delete(deleteUrl, {
