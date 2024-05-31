@@ -95,7 +95,7 @@ console.log("targets ", targets);
 
 if( response.status >= 200 && response.status < 300)
   {
-    navigate("/frontend/templates")
+    navigate("/templates")
   }
       })
       .catch(error => {
@@ -202,7 +202,7 @@ if( response.status >= 200 && response.status < 300)
           onClick={() => { createTemplate() }} >
           Create </Button>
           <Button variant="contained" color="error" onClick={()=>{
-            navigate("/frontend/templates")
+            navigate("/templates")
           }}>
               Cancel
             </Button>

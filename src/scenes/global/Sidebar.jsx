@@ -136,14 +136,14 @@ const logoutHandler= ()=>{
 
               <Item
                 title="Templates"
-                to="/frontend/templates"
+                to="/templates"
                 icon={<ReceiptOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />    
               <Item
                 title="Constraints"
-                to="/frontend/constraints"
+                to="/constraints"
                 icon={<ContactsOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -153,7 +153,7 @@ const logoutHandler= ()=>{
                 }}>
               <Item
                 title="Log out"
-                to="/frontend/login"
+                to="/login"
                 icon={<LogoutIcon />}
                 selected={selected}
                 setSelected={setSelected}

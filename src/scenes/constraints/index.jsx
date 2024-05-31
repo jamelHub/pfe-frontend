@@ -16,7 +16,7 @@ const Constraints = () => {
       <span>  List of Constraints</span>
       <Button color="primary"  variant="contained" className="float-right m-4" 
              onClick={() => {
-              navigate('/frontend/constraints/create');
+              navigate('/constraints/create');
             }} >
           Create Constraint</Button>
 
