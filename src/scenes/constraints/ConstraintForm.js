@@ -1,51 +1,85 @@
-import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
-import { TextField, MenuItem, Button } from "@mui/material";
-import * as Yup from "yup";
-import { DeveloperBoard } from "@mui/icons-material";
-import InputAdornment from "@mui/material/InputAdornment";
+import React, { useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import { TextField, MenuItem, Button } from '@mui/material';
+import * as Yup from 'yup';
+import axios from 'axios';
+import { getWithExpiry } from '../../util/localstorage';
+import { useNavigate } from 'react-router-dom';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/Inbox';
+import { FormControl, InputLabel, Select } from '@mui/material';
 
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/Inbox";
-
-import { FormControl, InputLabel, Select, Box } from "@mui/material";
 
 const templates = [
-  { value: "gatekeeper-system", label: "Gatekeeper System" },
-  { value: "ingress-nginx", label: "Ingress Nginx" },
-  { value: "kubernetes", label: "Kubernetes" },
+  { value: 'gatekeeper-system', label: 'Gatekeeper System' },
+  { value: 'ingress-nginx', label: 'Ingress Nginx' },
+  { value: 'kubernetes', label: 'Kubernetes' },
 ];
 
 const initialValues = {
-  name: "",
-  description: "",
-  template: "",
+  name: '',
+  description: '',
+  template: '',
 };
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  template: Yup.string().required("Template is required"),
+  name: Yup.string().required('Name is required'),
+  template: Yup.string().required('Template is required'),
 });
 
 const ConstraintForm = () => {
+
+  const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState(0);
-
-  const [scope, setScope] = useState("");
-  const [name, setName] = useState("");
-  const [api, setApi] = useState("");
-  const [kind, setKind] = useState("");
-
+  const [scope, setScope] = useState('');
+  const [name, setName] = useState('');
+  const [api, setApi] = useState('');
+  const [kind, setKind] = useState('');
   const [disabledApi, setDisabledApi] = useState(true);
   const [disabledKind, setDisabledKind] = useState(true);
-
-  const [excludedtemplates, setExcludedtemplates] = useState("");
+  const [excludedtemplates, setExcludedtemplates] = useState('');
 
   const handleSubmit = (values) => {
-    console.log(values);
+    const url = `http://34.204.81.246/proxy/apis/constraints.gatekeeper.sh/v1beta1/k8scontainerlimit/`;
+
+    const data = {
+      apiVersion: 'constraints.gatekeeper.sh/v1beta1',
+      kind: 'k8scontainerlimit',
+      metadata: {
+        name: `${name}`,
+      },
+      spec: {
+        match: {
+          kinds: [{ apiGroups: [`${api}`], kinds: [`${kind}`] }],
+          scope: `${scope}`,
+          excludedNamespaces: [`${scope}`],
+        },
+        parameters: {
+          labels: ['app'],
+        },
+      },
+    };
+
+    // Make the POST request using Axios
+    axios
+      .post(url, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('kubeToken')}`,
+        },
+      })
+      .then((response) => {
+        if (response.status >= 200 && response.status < 300) {
+          navigate('/templates');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
   };
 
   const handleListItemClick = (event, index) => {
@@ -79,7 +113,6 @@ const ConstraintForm = () => {
       {({ values, errors, touched, handleChange }) => (
         <Form className="w-5/6">
           <h1 className="text-3xl font-bold text-center my-8">
-            {" "}
             Create new Constraint
           </h1>
           <div className="w-full   flex  pl-4 gap-5">
@@ -215,14 +248,13 @@ const ConstraintForm = () => {
                       value={api}
                       onChange={handleApiChange}
                       disabled={disabledApi}
-                      variant="filled" 
+                      variant="filled"
                       fullWidth
                     />
 
                     <div className="">
                       <div
                         className="w-16 h-full text-center items-center flex flex-col justify-center cursor-pointer bg-blue-400"
-
                         onClick={() => setDisabledKind(false)}
                       >
                         Add Kind
@@ -236,8 +268,7 @@ const ConstraintForm = () => {
                       onChange={handleKindChange}
                       disabled={disabledKind}
                       fullWidth
-                      variant="filled" 
-
+                      variant="filled"
                     />
                   </div>
                 </div>
