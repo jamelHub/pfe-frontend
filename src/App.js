@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -21,30 +22,30 @@ function App() {
 
   const [isLogin, setIsLogin] = useState(true);
 
-  const checkLogin = async () => {
-    try {
-      const response = await axios.get("http://100.24.19.105/login", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("userToken")}`, // JWT
-        },
-      });
-      if (response.ok) {
-        setIsLogin(true);
-        navigate("/");
-      } else {
-        setIsLogin(false);
-        navigate("/login");
-      }
-    } catch (error) {
-      setIsLogin(false);
-      navigate("/login");
-    }
-  };
+  // const checkLogin = async () => {
+  //   try {
+  //     const response = await axios.get("http://100.24.19.105/login", {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${getWithExpiry("userToken")}`, // JWT
+  //       },
+  //     });
+  //     if (response.ok) {
+  //       setIsLogin(true);
+  //       navigate("/");
+  //     } else {
+  //       setIsLogin(false);
+  //       navigate("/login");
+  //     }
+  //   } catch (error) {
+  //     setIsLogin(false);
+  //     navigate("/login");
+  //   }
+  // };
 
-  useEffect(() => {
-    checkLogin();
-  }, []);
+  // useEffect(() => {
+  //   checkLogin();
+  // }, []);
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={Theme}>

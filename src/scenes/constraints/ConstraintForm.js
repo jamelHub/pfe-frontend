@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField, MenuItem, Button } from '@mui/material';
 import * as Yup from 'yup';
@@ -13,13 +13,6 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/Inbox';
 import { FormControl, InputLabel, Select } from '@mui/material';
 
-
-const templates = [
-  { value: 'gatekeeper-system', label: 'Gatekeeper System' },
-  { value: 'ingress-nginx', label: 'Ingress Nginx' },
-  { value: 'kubernetes', label: 'Kubernetes' },
-];
-
 const initialValues = {
   name: '',
   description: '',
@@ -32,7 +25,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const ConstraintForm = () => {
-
   const navigate = useNavigate();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [scope, setScope] = useState('');
@@ -42,21 +34,46 @@ const ConstraintForm = () => {
   const [disabledApi, setDisabledApi] = useState(true);
   const [disabledKind, setDisabledKind] = useState(true);
   const [excludedtemplates, setExcludedtemplates] = useState('');
+  const [templates, setTemplates] = useState([]);
+  const [template,setTemplate]= useState('')
+  const fetchTemplates = async () => {
+    try {
+      const response = await axios.get('http://100.26.178.180/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates', {
+        headers: {
+          Authorization: `Bearer ${getWithExpiry('kubeToken')}`,
+        },
+      });
+      const rs = response.data.items;
+      const list = rs.map(obj => obj.metadata.name);
+
+
+      setTemplates(list); // Adjust based on API response structure
+    } catch (error) {
+      console.error('Error fetching templates:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch templates from the API
+  
+
+    fetchTemplates();
+  }, []);
 
   const handleSubmit = (values) => {
-    const url = `http://34.204.81.246/proxy/apis/constraints.gatekeeper.sh/v1beta1/k8scontainerlimit/`;
+    const url = `http://100.26.178.180/proxy/apis/constraints.gatekeeper.sh/v1beta1/`+template;
 
     const data = {
       apiVersion: 'constraints.gatekeeper.sh/v1beta1',
-      kind: 'k8scontainerlimit',
+      kind: template,
       metadata: {
-        name: `${name}`,
+        name:  `${name}`,
       },
       spec: {
         match: {
           kinds: [{ apiGroups: [`${api}`], kinds: [`${kind}`] }],
           scope: `${scope}`,
-          excludedNamespaces: [`${scope}`],
+          excludedNamespaces: [`${excludedtemplates}`],
         },
         parameters: {
           labels: ['app'],
@@ -85,6 +102,7 @@ const ConstraintForm = () => {
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index);
   };
+
   const handleScopeChange = (event) => {
     setScope(event.target.value);
   };
@@ -96,6 +114,7 @@ const ConstraintForm = () => {
   const handleKindChange = (event) => {
     setKind(event.target.value);
   };
+
   const handleNameChange = (event) => {
     setName(event.target.value);
   };
@@ -112,10 +131,8 @@ const ConstraintForm = () => {
     >
       {({ values, errors, touched, handleChange }) => (
         <Form className="w-5/6">
-          <h1 className="text-3xl font-bold text-center my-8">
-            Create new Constraint
-          </h1>
-          <div className="w-full   flex  pl-4 gap-5">
+          <h1 className="text-3xl font-bold text-center my-8">Create new Constraint</h1>
+          <div className="w-full flex pl-4 gap-5">
             <div className="flex" style={{ flex: 1 }}>
               <Field
                 as={TextField}
@@ -146,7 +163,7 @@ const ConstraintForm = () => {
               />
             </div>
           </div>
-          <div className="w-full   flex  pl-4 gap-5">
+          <div className="w-full flex pl-4 gap-5">
             <Field
               as={TextField}
               select
@@ -162,14 +179,16 @@ const ConstraintForm = () => {
               required
             >
               {templates.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+                <MenuItem key={option} value={option} onClick={()=>{
+                  setTemplate(option)
+                }}>
+                  {option}
                 </MenuItem>
               ))}
             </Field>
           </div>
           <div className="flex w-full">
-            <div className=" w-2/6">
+            <div className="w-2/6">
               <List>
                 <ListItem disablePadding>
                   <ListItemButton
@@ -195,8 +214,8 @@ const ConstraintForm = () => {
                 </ListItem>
               </List>
             </div>
-            {selectedIndex == 0 && (
-              <div className=" flex flex-col pl-4 gap-4 w-full py-4">
+            {selectedIndex === 0 && (
+              <div className="flex flex-col pl-4 gap-4 w-full py-4">
                 <FormControl fullWidth>
                   <InputLabel id="scope-label">Scope</InputLabel>
                   <Select
@@ -229,11 +248,11 @@ const ConstraintForm = () => {
               </div>
             )}
 
-            {selectedIndex == 1 && (
+            {selectedIndex === 1 && (
               <div className="w-full flex flex-col gap-4 py-4">
-                <div className="w-full   flex  pl-4 ">
-                  <div className="flex  w-full">
-                    <div className="h-full  ">
+                <div className="w-full flex pl-4">
+                  <div className="flex w-full">
+                    <div className="h-full">
                       <div
                         className="w-16 h-full text-center items-center flex flex-col justify-center cursor-pointer bg-blue-400"
                         onClick={() => setDisabledApi(false)}
@@ -274,12 +293,7 @@ const ConstraintForm = () => {
                 </div>
 
                 <div className="ml-4 mt-4">
-                  <Button
-                    type="submit"
-                    className="m-4"
-                    variant="contained"
-                    color="primary"
-                  >
+                  <Button type="submit" className="m-4" variant="contained" color="primary">
                     Add role
                   </Button>
                 </div>
@@ -287,7 +301,7 @@ const ConstraintForm = () => {
             )}
           </div>
 
-          <div className="flex w-full  gap-4 my-4 justify-end">
+          <div className="flex w-full gap-4 my-4 justify-end">
             <Button type="submit" variant="contained" color="primary">
               Create
             </Button>
