@@ -39,7 +39,7 @@ const ConstraintForm = () => {
   const fetchTemplates = async () => {
     try {
       const response = await axios.get(
-        'http://100.25.170.116/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates',
+        'http://54.146.79.133/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates',
         {
           headers: {
             Authorization: `Bearer ${getWithExpiry('kubeToken')}`,
@@ -63,7 +63,7 @@ const ConstraintForm = () => {
 
   const handleSubmit = (values) => {
     const url =
-      `http://100.25.170.116/proxy/apis/constraints.gatekeeper.sh/v1beta1/` +
+      `http://54.146.79.133/proxy/apis/constraints.gatekeeper.sh/v1beta1/` +
       template;
 
     const data = {
@@ -96,7 +96,7 @@ const ConstraintForm = () => {
       })
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {
-          navigate('/constraints');
+          navigate('/frontend/constraints');
         }
       })
       .catch((error) => {
@@ -235,6 +235,7 @@ const ConstraintForm = () => {
                     value={scope}
                     label="Scope"
                     onChange={handleScopeChange}
+                    required
                   >
                     <MenuItem value="cluster">Cluster</MenuItem>
                     <MenuItem value="namespace">Namespace</MenuItem>
@@ -247,14 +248,16 @@ const ConstraintForm = () => {
                   value={name}
                   onChange={handleNameChange}
                   fullWidth
+                  required
                 />
 
                 <TextField
                   id="Excludedtemplates"
-                  label="Excluded templates"
+                  label="Excluded namespaces"
                   value={excludedtemplates}
                   onChange={handleExcludedtemplatesChange}
                   fullWidth
+                  required
                 />
               </div>
             )}
@@ -321,9 +324,13 @@ const ConstraintForm = () => {
             <Button type="submit" variant="contained" color="primary">
               Create
             </Button>
-            <Button variant="contained" color="error">
-              Cancel
-            </Button>
+            <Button
+          variant="contained"
+          color="error"
+          onClick={() => navigate('/frontend/constraints')}
+        >
+          Cancel
+        </Button>
           </div>
         </Form>
       )}

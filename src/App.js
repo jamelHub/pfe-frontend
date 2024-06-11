@@ -59,18 +59,18 @@ function App() {
 
           <main className="h-full w-full ">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/templates" element={<Templates />} />
-              <Route path="/templates/create" element={<TemplateForm />} />
+              <Route path="/frontend" element={<Dashboard />} />
+              <Route path="/frontend/login" element={<Login />} />
+              <Route path="/frontend/templates" element={<Templates />} />
+              <Route path="/frontend/templates/create" element={<TemplateForm />} />
               <Route
-                path="/templates/edit/:id"
+                path="/frontend/templates/edit/:id"
                 element={<UpdateTemplateForm />}
               />
-              <Route path="/constraints" element={<Constraints />} />
-              <Route path="/constraints/create" element={<ConstraintForm />} />
+              <Route path="/frontend/constraints" element={<Constraints />} />
+              <Route path="/frontend/constraints/create" element={<ConstraintForm />} />
               <Route
-                path="/constraints/edit/:id"
+                path="/frontend/constraints/edit/:id"
                 element={<UpdateConstraintForm />}
               />
             </Routes>

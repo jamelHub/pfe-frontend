@@ -40,7 +40,7 @@ const UpdateConstraintForm = () => {
   const fetchTemplates = async () => {
     try {
       const response = await axios.get(
-        'http://100.25.170.116/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates',
+        'http://54.146.79.133/proxy/apis/templates.gatekeeper.sh/v1beta1/constrainttemplates',
         {
           headers: {
             Authorization: `Bearer ${getWithExpiry('kubeToken')}`,
@@ -59,7 +59,7 @@ const UpdateConstraintForm = () => {
   const fetchConstraint = async () => {
     try {
       const response = await axios.get(
-        `http://100.25.170.116/proxy/apis/constraints.gatekeeper.sh/v1beta1/${id}`,
+        `http://54.146.79.133/proxy/apis/constraints.gatekeeper.sh/v1beta1/${id}`,
         {
           headers: {
             Authorization: `Bearer ${getWithExpiry('kubeToken')}`,
@@ -89,7 +89,7 @@ const UpdateConstraintForm = () => {
   }, []);
 
   const handleSubmit = (values) => {
-    const url = `http://100.25.170.116/proxy/apis/constraints.gatekeeper.sh/v1beta1/${template}`;
+    const url = `http://54.146.79.133/proxy/apis/constraints.gatekeeper.sh/v1beta1/${template}`;
 
     // change the body of the edit as it required.
     const data = {
@@ -121,7 +121,7 @@ const UpdateConstraintForm = () => {
       })
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {
-          navigate('/constraints');
+          navigate('/frontend/constraints');
         }
       })
       .catch((error) => {
@@ -261,6 +261,7 @@ const UpdateConstraintForm = () => {
                     value={scope}
                     label="Scope"
                     onChange={handleScopeChange}
+                    required
                   >
                     <MenuItem value="Cluster">Cluster</MenuItem>
                     <MenuItem value="Namespace">Namespace</MenuItem>
@@ -273,6 +274,7 @@ const UpdateConstraintForm = () => {
                   value={name}
                   onChange={handleNameChange}
                   fullWidth
+                  required
                 />
 
                 <TextField
@@ -281,6 +283,7 @@ const UpdateConstraintForm = () => {
                   value={excludedNamespaces}
                   onChange={handleExcludedNamespacesChange}
                   fullWidth
+                  required
                 />
               </div>
             )}
@@ -347,9 +350,13 @@ const UpdateConstraintForm = () => {
             <Button type="submit" variant="contained" color="primary">
               Update
             </Button>
-            <Button variant="contained" color="error">
-              Cancel
-            </Button>
+            <Button
+          variant="contained"
+          color="error"
+          onClick={() => navigate('/frontend/constraints')}
+        >
+          Cancel
+        </Button>
           </div>
         </Form>
       )}

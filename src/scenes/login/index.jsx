@@ -27,7 +27,7 @@ const Login = () => {
   const handlePasswordLogin = async (values) => {
     try {
       const { username, password } = values;
-      const response = await axios.post(`http://100.25.170.116/login`, {
+      const response = await axios.post(`http://54.146.79.133/login`, {
         username,
         password,
       });
@@ -37,7 +37,7 @@ const Login = () => {
         setWithExpiry('userToken', response.data.userToken);
         setWithExpiry('kubeToken', response.data.kubeToken);
 
-        navigate('/');
+        navigate('/frontend');
       } else {
         throw Error(await response.text());
       }
