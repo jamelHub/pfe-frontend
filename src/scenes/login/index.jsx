@@ -5,16 +5,10 @@ import { setWithExpiry } from '../../util/localstorage';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 const validationSchema = yup.object({
-  username: yup
-    .string('Enter your username')
-    .required('Username is required'),
-  password: yup
-    .string('Enter your password')
-    .required('Password is required'),
+  username: yup.string('Enter your username').required('Username is required'),
+  password: yup.string('Enter your password').required('Password is required'),
 });
-
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,13 +27,13 @@ const Login = () => {
   const handlePasswordLogin = async (values) => {
     try {
       const { username, password } = values;
-      const response = await axios.post(`http://54.162.87.128/login`, {
+      const response = await axios.post(`http://100.25.170.116/login`, {
         username,
-        password
+        password,
       });
-      console.log(" response ", response)
+      console.log(' response ', response);
 
-      if (response.status ==200) {
+      if (response.status == 200) {
         setWithExpiry('userToken', response.data.userToken);
         setWithExpiry('kubeToken', response.data.kubeToken);
 
@@ -48,20 +42,14 @@ const Login = () => {
         throw Error(await response.text());
       }
     } catch (error) {
-
       alert('Login failed. Please check your credentials.', error);
-
     }
   };
-
-
-
-
 
   return (
     <div className="flex h-full w-full  ">
       <div className="w-2/6 m-auto h-full flex flex-col justify-center ">
-        <h1 className='text-center font-bold text-4xl mb-12' > Welcome</h1>
+        <h1 className="text-center font-bold text-4xl mb-12"> Welcome</h1>
         <form
           onSubmit={formik.handleSubmit}
           className=" flex flex-col justify-between h-40 ml-5 gap-2"
@@ -74,7 +62,7 @@ const Login = () => {
             value={formik.values.username}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={formik.touched.username && Boolean (formik.errors.username)}
+            error={formik.touched.username && Boolean(formik.errors.username)}
             helperText={formik.touched.username && formik.errors.username}
           />
           <TextField
@@ -89,13 +77,10 @@ const Login = () => {
             error={formik.touched.password && Boolean(formik.errors.password)}
             helperText={formik.touched.password && formik.errors.password}
           />
-          <Button color="primary" variant="contained" fullWidth type="submit"
-          >
+          <Button color="primary" variant="contained" fullWidth type="submit">
             Submit
           </Button>
-          
         </form>
-
       </div>
     </div>
   );
