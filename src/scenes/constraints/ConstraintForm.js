@@ -68,13 +68,13 @@ const ConstraintForm = () => {
   const handleSubmit = (values) => {
     const url =
       `http://54.146.79.133/proxy/apis/constraints.gatekeeper.sh/v1beta1/` +
-      template;
+      values.template;
 
     const data = {
       apiVersion: 'constraints.gatekeeper.sh/v1beta1',
-      kind: template,
+      kind: values.template,
       metadata: {
-        name: `${name}`,
+        name: `${values.name}`,
       },
       spec: {
         match: {
@@ -194,7 +194,6 @@ const ConstraintForm = () => {
               error={touched.template && !!errors.template}
               helperText={touched.template && errors.template}
               onChange={handleChange}
-              required
             >
               {templates.map((option) => (
                 <MenuItem

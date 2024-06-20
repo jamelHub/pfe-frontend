@@ -200,7 +200,6 @@ spec:
     const value = e.target.value;
     setYamlTemplate(value);
     const parsedYaml = yaml.load(value);
-
     const n = parsedYaml.metadata.name;
     const c = parsedYaml.spec.crd;
     const t = parsedYaml.spec.targets;
