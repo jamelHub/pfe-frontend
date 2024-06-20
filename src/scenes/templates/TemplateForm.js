@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getWithExpiry } from '../../util/localstorage';
 import axios from 'axios';
 import yaml from 'js-yaml';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
 const TemplateForm = () => {
-  const initialYamlTemplate = `
+  const defaultYamlTemplate = `
 apiVersion: templates.gatekeeper.sh/v1
 kind: ConstraintTemplate
 metadata:
@@ -24,12 +24,15 @@ spec:
   const [name, setName] = useState('');
   const [targets, setTargets] = useState('');
   const [errors, setErrors] = useState({});
+  const [yamlTemplate, setYamlTemplate] = useState(defaultYamlTemplate);
 
   const validateFields = () => {
     const newErrors = {};
-    if (!name) newErrors.name = 'Name is required';
-    if (!crd) newErrors.crd = 'CRD is required';
-    if (!targets) newErrors.targets = 'Targets are required';
+    if (!name || name.length == 0) newErrors.name = 'Name is required';
+    if (!crd || crd.length == 0) newErrors.crd = 'CRD is required';
+    if (!targets || targets.length == 0)
+      newErrors.targets = 'Targets are required';
+
     if (
       name &&
       crd &&
@@ -43,15 +46,17 @@ spec:
   };
 
   const handleGenerateTemplate = () => {
-    if (!validateFields()) return;
+    //if (!validateFields()) return;
 
-    const templateWithUserInput = initialYamlTemplate
+    const templateWithUserInput = yamlTemplate
       .replace('<NAME_PLACEHOLDER>', name)
       .replace('<CRD_PLACEHOLDER>', crd)
       .replace('<TARGETS_PLACEHOLDER>', targets);
 
     const parsedYaml = yaml.load(templateWithUserInput);
+
     const yamlString = yaml.dump(parsedYaml);
+
     const blob = new Blob([yamlString], { type: 'text/yaml' });
     saveAs(blob, 'new-template.yaml');
   };
@@ -191,13 +196,40 @@ spec:
     });
   };
 
+  const ymlchanged = (e) => {
+    const value = e.target.value;
+    setYamlTemplate(value);
+    const parsedYaml = yaml.load(value);
+
+    const n = parsedYaml.metadata.name;
+    const c = parsedYaml.spec.crd;
+    const t = parsedYaml.spec.targets;
+
+    setName(n);
+    setTargets(t);
+    setCrd(c);
+  };
+
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold mb-4">Create new Template</h1>
-      <div className="bg-gray-100 border border-gray-300 p-4 rounded mb-4">
-        {renderYamlWithInputs(initialYamlTemplate)}
-      </div>
+      <textarea
+        value={yamlTemplate}
+        onChange={(e) => ymlchanged(e)}
+        rows="10"
+        className="w-full  bg-gray-100 border border-gray-300 p-4 rounded mb-4"
+      />
+      {/*   <div className="bg-gray-100 border border-gray-300 p-4 rounded mb-4 hidden">
+        {renderYamlWithInputs(yamlTemplate)}
+      </div> */}
+      {errors.name && <div className="text-red-500 mb-4">{errors.name}</div>}
+      {errors.crd && <div className="text-red-500 mb-4">{errors.crd}</div>}
+      {errors.targets && (
+        <div className="text-red-500 mb-4">{errors.targets}</div>
+      )}
+
       {errors.match && <div className="text-red-500 mb-4">{errors.match}</div>}
+
       <button
         onClick={handleGenerateTemplate}
         className="px-4 py-2 bg-blue-500 text-white rounded shadow"
