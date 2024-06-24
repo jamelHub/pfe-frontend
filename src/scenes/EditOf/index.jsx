@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useParams } from 'react-router-dom';
 import {
   TextField,
   Checkbox,
@@ -9,18 +9,16 @@ import {
   MenuItem,
   Button,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 
-import { getWithExpiry } from "../../util/localstorage";
+import { getWithExpiry } from '../../util/localstorage';
 
 import { useNavigate } from 'react-router-dom';
 
-
-import Searchinput from "../../components/SearchInput";
+import Searchinput from '../../components/SearchInput';
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Name is required"),
-
+  name: Yup.string().required('Name is required'),
 });
 
 const EditOf = () => {
@@ -39,30 +37,30 @@ const EditOf = () => {
 
   const fetchDepartements = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/departements`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/departements`, {
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
       });
       const data = await response.json();
 
       setDepartements(data);
-      console.log(" departemensts" , departements)
+      console.log(' departemensts', departements);
     } catch (error) {
-      console.error("Error fetching of:", error);
+      console.error('Error fetching of:', error);
     }
   };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/ofs/${id}`, {
+        const response = await fetch(`http://pfe.emkatech.tn/api/ofs/${id}`, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
         });
         const data = await response.json();
@@ -70,7 +68,7 @@ const EditOf = () => {
         setOf(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching of:", error);
+        console.error('Error fetching of:', error);
         setLoading(false);
       }
     };
@@ -80,8 +78,7 @@ const EditOf = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: of ? of.name : "",
-   
+      name: of ? of.name : '',
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -92,23 +89,23 @@ const EditOf = () => {
           departements: departementIds,
         };
 
-        const response = await fetch(`http://localhost:8080/api/ofs/${id}`, {
-          method: "PUT",
+        const response = await fetch(`http://pfe.emkatech.tn/api/ofs/${id}`, {
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
           body: JSON.stringify(updated),
         });
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await response.json();
         navigate('/ofs');
 
-        console.log("Success:", data);
+        console.log('Success:', data);
       } catch (error) {
-        console.error("Error:", error);
+        console.error('Error:', error);
       }
     },
   });
@@ -132,7 +129,6 @@ const EditOf = () => {
       onSubmit={formik.handleSubmit}
       className="p-6 bg-white rounded-lg shadow-md"
     >
-
       <div className="mb-4">
         <TextField
           label="Name"
@@ -147,18 +143,15 @@ const EditOf = () => {
           helperText={formik.touched.name && formik.errors.name}
         />
       </div>
-   
 
-
-       {departements && (
+      {departements && (
         <Searchinput
           produits={departements}
           selectedProduit={of.departements}
           productsValues={handleProducts}
           title="Ofs"
-
         />
-      )} 
+      )}
       <Button
         type="submit"
         variant="contained"

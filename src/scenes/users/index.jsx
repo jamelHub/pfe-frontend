@@ -24,7 +24,7 @@ const Users = () => {
   const [user, setUser] = useState([]);
   const handleUsers = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/users`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/users`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -49,30 +49,32 @@ const Users = () => {
   useEffect(() => {
     handleUsers();
   }, []);
-  
 
-const deleteUser = async (userId) =>{
-  try {
-    const response = await fetch(`http://localhost:8080/api/user/`+userId, {
-      method: 'DELETE',
+  const deleteUser = async (userId) => {
+    try {
+      const response = await fetch(
+        `http://pfe.emkatech.tn/api/user/` + userId,
+        {
+          method: 'DELETE',
 
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
-      },
-    });
-    handleUsers();
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+          },
+        }
+      );
+      handleUsers();
 
-    if (response.ok) {
-    } else {
-      throw Error(await response.text());
+      if (response.ok) {
+      } else {
+        throw Error(await response.text());
+      }
+    } catch (error) {
+      //   setFailed(true);
+      //   setPassword('');
     }
-  } catch (error) {
-    //   setFailed(true);
-    //   setPassword('');
-  }
-}
+  };
 
   return (
     <div className="mx-2">
@@ -118,7 +120,7 @@ const deleteUser = async (userId) =>{
                 <EditIcon />
               </IconButton>
               <IconButton aria-label="delete">
-                <DeleteIcon  onClick={()=>deleteUser(user._id)} />
+                <DeleteIcon onClick={() => deleteUser(user._id)} />
               </IconButton>
             </div>
           </Card>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useParams } from 'react-router-dom';
 import {
   TextField,
   Checkbox,
@@ -9,15 +9,15 @@ import {
   MenuItem,
   Button,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 
-import { getWithExpiry } from "../../util/localstorage";
-import { useNavigate } from "react-router-dom";
+import { getWithExpiry } from '../../util/localstorage';
+import { useNavigate } from 'react-router-dom';
 
-import Searchinput from "../../components/SearchInput";
+import Searchinput from '../../components/SearchInput';
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Name is required"),
+  name: Yup.string().required('Name is required'),
 });
 
 const EditUser = () => {
@@ -36,29 +36,29 @@ const EditUser = () => {
 
   const fetchDepartement = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/departements`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/departements`, {
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
       });
       const data = await response.json();
 
       setDepartements(data);
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error('Error fetching user:', error);
     }
   };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/ofs/${id}`, {
+        const response = await fetch(`http://pfe.emkatech.tn/api/ofs/${id}`, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
         });
         const data = await response.json();
@@ -66,7 +66,7 @@ const EditUser = () => {
         setUser(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
         setLoading(false);
       }
     };
@@ -76,7 +76,7 @@ const EditUser = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      name: '',
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -87,21 +87,21 @@ const EditUser = () => {
           departements: departementIds,
         };
 
-        const response = await fetch(`http://localhost:8080/api/ofs`, {
-          method: "POST",
+        const response = await fetch(`http://pfe.emkatech.tn/api/ofs`, {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
           body: JSON.stringify(updated),
         });
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        navigate("/ofs");
+        navigate('/ofs');
       } catch (error) {
-        console.error("Error:", error);
+        console.error('Error:', error);
       }
     },
   });
@@ -142,7 +142,7 @@ const EditUser = () => {
 
       {departements && (
         <Searchinput
-        title = "Departements"
+          title="Departements"
           produits={departements}
           selectedProduit={user.departements}
           productsValues={handleProducts}

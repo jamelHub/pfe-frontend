@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useParams } from 'react-router-dom';
 import {
   TextField,
   Checkbox,
@@ -9,23 +9,22 @@ import {
   MenuItem,
   Button,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 
-import { getWithExpiry } from "../../util/localstorage";
+import { getWithExpiry } from '../../util/localstorage';
 
 import { useNavigate } from 'react-router-dom';
 
-
-import Searchinput from "../../components/SearchInput";
+import Searchinput from '../../components/SearchInput';
 
 const validationSchema = Yup.object({
-  matricule: Yup.string().required("Matricule is required"),
-  name: Yup.string().required("Name is required"),
+  matricule: Yup.string().required('Matricule is required'),
+  name: Yup.string().required('Name is required'),
   email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  departement: Yup.string().required("Departement is required"),
-  responsable: Yup.string().required("responsable is required"),
+    .email('Invalid email format')
+    .required('Email is required'),
+  departement: Yup.string().required('Departement is required'),
+  responsable: Yup.string().required('responsable is required'),
 });
 
 const EditUser = () => {
@@ -44,29 +43,29 @@ const EditUser = () => {
 
   const fetchProduits = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/produits`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/produits`, {
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
       });
       const data = await response.json();
 
       setProduits(data);
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error('Error fetching user:', error);
     }
   };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+        const response = await fetch(`http://pfe.emkatech.tn/api/users/${id}`, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
         });
         const data = await response.json();
@@ -74,7 +73,7 @@ const EditUser = () => {
         setUser(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
         setLoading(false);
       }
     };
@@ -84,12 +83,12 @@ const EditUser = () => {
 
   const formik = useFormik({
     initialValues: {
-      matricule: user ? user.matricule : "",
-      email: user ? user.email : "",
-      name: user ? user.name : "",
+      matricule: user ? user.matricule : '',
+      email: user ? user.email : '',
+      name: user ? user.name : '',
       responsable: user ? user.responsable : false,
       administrator: user ? user.administrator : false,
-      departement: user ? user.departement : "",
+      departement: user ? user.departement : '',
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -100,24 +99,24 @@ const EditUser = () => {
           produits: productIds,
         };
 
-        console.log(" updated data ", updated);
-        const response = await fetch(`http://localhost:8080/api/users/${id}`, {
-          method: "PUT",
+        console.log(' updated data ', updated);
+        const response = await fetch(`http://pfe.emkatech.tn/api/users/${id}`, {
+          method: 'PUT',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
           body: JSON.stringify(updated),
         });
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await response.json();
         navigate('/users');
 
-        console.log("Success:", data);
+        console.log('Success:', data);
       } catch (error) {
-        console.error("Error:", error);
+        console.error('Error:', error);
       }
     },
   });
@@ -235,15 +234,14 @@ const EditUser = () => {
         </TextField>
       </div>
 
-       {produits && (
+      {produits && (
         <Searchinput
           produits={produits}
           selectedProduit={user.produits}
           productsValues={handleProducts}
           title="Produits"
-
         />
-      )} 
+      )}
       <Button
         type="submit"
         variant="contained"

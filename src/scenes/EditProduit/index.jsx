@@ -1,22 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useParams } from "react-router-dom";
-import {
-  TextField,
-  Button,
-  CircularProgress,
-} from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useParams } from 'react-router-dom';
+import { TextField, Button, CircularProgress } from '@mui/material';
 
-import { getWithExpiry } from "../../util/localstorage";
+import { getWithExpiry } from '../../util/localstorage';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import Searchinput from "../../components/SearchInput";
+import Searchinput from '../../components/SearchInput';
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Name is required"),
-  description: Yup.string().required("Description is required"),
+  name: Yup.string().required('Name is required'),
+  description: Yup.string().required('Description is required'),
 });
 
 const EditProduit = () => {
@@ -35,18 +31,18 @@ const EditProduit = () => {
 
   const fetchOfs = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/ofs`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/ofs`, {
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
       });
       const data = await response.json();
 
       setOfs(data);
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error('Error fetching user:', error);
     }
   };
 
@@ -54,12 +50,12 @@ const EditProduit = () => {
     const fetchProduit = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/produits/${id}`,
+          `http://pfe.emkatech.tn/api/produits/${id}`,
           {
             headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
             },
           }
         );
@@ -68,7 +64,7 @@ const EditProduit = () => {
         setProduit(data);
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
         setLoading(false);
       }
     };
@@ -78,9 +74,8 @@ const EditProduit = () => {
 
   const formik = useFormik({
     initialValues: {
-      description: produit ? produit.description : "",
-      name: produit ? produit.name : "",
-   
+      description: produit ? produit.description : '',
+      name: produit ? produit.name : '',
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -91,24 +86,27 @@ const EditProduit = () => {
           ofs: ofIds,
         };
 
-        console.log(" updated data ", updated);
-        const response = await fetch(`http://localhost:8080/api/produits/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
-          },
-          body: JSON.stringify(updated),
-        });
+        console.log(' updated data ', updated);
+        const response = await fetch(
+          `http://pfe.emkatech.tn/api/produits/${id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+            },
+            body: JSON.stringify(updated),
+          }
+        );
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        navigate("/produits");
+        navigate('/produits');
 
-        console.log("Success:", data);
+        console.log('Success:', data);
       } catch (error) {
-        console.error("Error:", error);
+        console.error('Error:', error);
       }
     },
   });
@@ -142,11 +140,13 @@ const EditProduit = () => {
           value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.description && Boolean(formik.errors.description)}
+          error={
+            formik.touched.description && Boolean(formik.errors.description)
+          }
           helperText={formik.touched.description && formik.errors.description}
         />
       </div>
-  
+
       <div className="mb-4">
         <TextField
           label="Name"
@@ -161,8 +161,6 @@ const EditProduit = () => {
           helperText={formik.touched.name && formik.errors.name}
         />
       </div>
-     
-     
 
       {ofs && (
         <Searchinput

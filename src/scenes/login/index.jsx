@@ -25,8 +25,7 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
-  const [failed,setFailed]= useState('')
+  const [failed, setFailed] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -42,7 +41,7 @@ const Login = () => {
   const handlePasswordLogin = async (values) => {
     try {
       const { matricule, password } = values;
-      const response = await fetch(`http://localhost:8080/api/session`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/session`, {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -60,8 +59,7 @@ const Login = () => {
         throw Error(await response.json());
       }
     } catch (error) {
-        setFailed("Login Failed");
-
+      setFailed('Login Failed');
     }
   };
 
@@ -100,7 +98,7 @@ const Login = () => {
             Submit
           </Button>
 
-          {failed && <p className='text-red-500	'> {failed}</p>}
+          {failed && <p className="text-red-500	"> {failed}</p>}
         </form>
       </div>
     </div>

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useParams } from 'react-router-dom';
 import {
   TextField,
   Checkbox,
@@ -9,24 +9,23 @@ import {
   MenuItem,
   Button,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 
-import { getWithExpiry } from "../../util/localstorage";
+import { getWithExpiry } from '../../util/localstorage';
 import { useNavigate } from 'react-router-dom';
 
-
-import Searchinput from "../../components/SearchInput";
+import Searchinput from '../../components/SearchInput';
 
 const validationSchema = Yup.object({
-  matricule: Yup.string().required("Matricule is required"),
-  name: Yup.string().required("Name is required"),
-  password: Yup.string().required("password is required"),
+  matricule: Yup.string().required('Matricule is required'),
+  name: Yup.string().required('Name is required'),
+  password: Yup.string().required('password is required'),
 
   email: Yup.string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  departement: Yup.string().required("Departement is required"),
-  responsable: Yup.string().required("responsable is required"),
+    .email('Invalid email format')
+    .required('Email is required'),
+  departement: Yup.string().required('Departement is required'),
+  responsable: Yup.string().required('responsable is required'),
 });
 
 const EditUser = () => {
@@ -45,38 +44,37 @@ const EditUser = () => {
 
   const fetchProduits = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/produits`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/produits`, {
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
       });
       const data = await response.json();
 
       setProduits(data);
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error('Error fetching user:', error);
     }
   };
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/users/${id}`, {
+        const response = await fetch(`http://pfe.emkatech.tn/api/users/${id}`, {
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
         });
         const data = await response.json();
 
         setUser(data);
         setLoading(false);
-        
       } catch (error) {
-        console.error("Error fetching user:", error);
+        console.error('Error fetching user:', error);
         setLoading(false);
       }
     };
@@ -86,13 +84,13 @@ const EditUser = () => {
 
   const formik = useFormik({
     initialValues: {
-      matricule: "",
-      email: "",
-      name: "",
-      password: "",
+      matricule: '',
+      email: '',
+      name: '',
+      password: '',
       responsable: false,
       administrator: false,
-      departement: "",
+      departement: '',
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
@@ -103,21 +101,21 @@ const EditUser = () => {
           produits: productIds,
         };
 
-        const response = await fetch(`http://localhost:8080/api/users`, {
-          method: "POST",
+        const response = await fetch(`http://pfe.emkatech.tn/api/users`, {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
           },
           body: JSON.stringify(updated),
         });
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error('Network response was not ok');
         }
         const data = await response.json();
         navigate('/users');
       } catch (error) {
-        console.error("Error:", error);
+        console.error('Error:', error);
       }
     },
   });

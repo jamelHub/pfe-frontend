@@ -1,29 +1,25 @@
-import Button from "@mui/material/Button";
-import Card from "../../components/Card";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { getWithExpiry } from "../../util/localstorage";
-import { usersActions } from "../../store";
+import Button from '@mui/material/Button';
+import Card from '../../components/Card';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getWithExpiry } from '../../util/localstorage';
+import { usersActions } from '../../store';
 
-import IconButton from "@mui/material/IconButton";
-const TitleUser = [
-  "Nom",
-  "Actions"
-  
-];
+import IconButton from '@mui/material/IconButton';
+const TitleUser = ['Nom', 'Actions'];
 
 const Ofs = () => {
   const navigate = useNavigate();
   const [of, setOf] = useState([]);
   const handleOfs = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/ofs`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/ofs`, {
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
       });
       if (response.ok) {
@@ -41,20 +37,19 @@ const Ofs = () => {
     }
   };
 
-
   useEffect(() => {
     handleOfs();
   }, []);
 
   const deleteOf = async (ofId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/ofs/` + ofId, {
-        method: "DELETE",
+      const response = await fetch(`http://pfe.emkatech.tn/api/ofs/` + ofId, {
+        method: 'DELETE',
 
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getWithExpiry("TOKEN")}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
         },
       });
       handleOfs();
@@ -78,7 +73,7 @@ const Ofs = () => {
           color="primary"
           variant="contained"
           onClick={() => {
-            navigate("/ofs/create");
+            navigate('/ofs/create');
           }}
         >
           Create new Of
@@ -98,7 +93,7 @@ const Ofs = () => {
               <IconButton
                 aria-label="edit"
                 onClick={() => {
-                  navigate("edit/" + of._id);
+                  navigate('edit/' + of._id);
                 }}
               >
                 <EditIcon />

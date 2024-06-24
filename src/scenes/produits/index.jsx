@@ -7,20 +7,14 @@ import { useState, useEffect } from 'react';
 import { getWithExpiry } from '../../util/localstorage';
 
 import IconButton from '@mui/material/IconButton';
-const TitleUser = [
-  'Nom',
-  'Description',
-  "Actions"
-
-
-];
+const TitleUser = ['Nom', 'Description', 'Actions'];
 
 const Produits = () => {
   const navigate = useNavigate();
   const [produit, setProduit] = useState([]);
   const handleProduits = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/produits`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/produits`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -44,30 +38,32 @@ const Produits = () => {
   useEffect(() => {
     handleProduits();
   }, []);
-  
 
-const deleteUser = async (produitId) =>{
-  try {
-    const response = await fetch(`http://localhost:8080/api/produits/`+produitId, {
-      method: 'DELETE',
+  const deleteUser = async (produitId) => {
+    try {
+      const response = await fetch(
+        `http://pfe.emkatech.tn/api/produits/` + produitId,
+        {
+          method: 'DELETE',
 
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
-      },
-    });
-    handleProduits();
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+          },
+        }
+      );
+      handleProduits();
 
-    if (response.ok) {
-    } else {
-      throw Error(await response.text());
+      if (response.ok) {
+      } else {
+        throw Error(await response.text());
+      }
+    } catch (error) {
+      //   setFailed(true);
+      //   setPassword('');
     }
-  } catch (error) {
-    //   setFailed(true);
-    //   setPassword('');
-  }
-}
+  };
 
   return (
     <div className="mx-2">
@@ -94,8 +90,7 @@ const deleteUser = async (produitId) =>{
           <Card>
             <div className="w-1/12"> {produit.name}</div>
             <div className="w-1/12"> {produit.description}</div>
-     
-      
+
             <div className="flex ">
               <IconButton
                 aria-label="edit"
@@ -106,7 +101,7 @@ const deleteUser = async (produitId) =>{
                 <EditIcon />
               </IconButton>
               <IconButton aria-label="delete">
-                <DeleteIcon  onClick={()=>deleteUser(produit._id)} />
+                <DeleteIcon onClick={() => deleteUser(produit._id)} />
               </IconButton>
             </div>
           </Card>

@@ -20,7 +20,7 @@ const Defaut = () => {
   const [defaut, setDefaut] = useState([]);
   const handleDefauts = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/defauts`, {
+      const response = await fetch(`http://pfe.emkatech.tn/api/defauts`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
@@ -45,30 +45,32 @@ const Defaut = () => {
   useEffect(() => {
     handleDefauts();
   }, []);
-  
 
-const deleteDefaut = async (defautId) =>{
-  try {
-    const response = await fetch(`http://localhost:8080/api/defauts/`+defautId, {
-      method: 'DELETE',
+  const deleteDefaut = async (defautId) => {
+    try {
+      const response = await fetch(
+        `http://pfe.emkatech.tn/api/defauts/` + defautId,
+        {
+          method: 'DELETE',
 
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
-      },
-    });
-    handleDefauts();
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getWithExpiry('TOKEN')}`,
+          },
+        }
+      );
+      handleDefauts();
 
-    if (response.ok) {
-    } else {
-      throw Error(await response.text());
+      if (response.ok) {
+      } else {
+        throw Error(await response.text());
+      }
+    } catch (error) {
+      //   setFailed(true);
+      //   setPassword('');
     }
-  } catch (error) {
-    //   setFailed(true);
-    //   setPassword('');
-  }
-}
+  };
 
   return (
     <div className="mx-2">
@@ -97,8 +99,7 @@ const deleteDefaut = async (defautId) =>{
             <div className="w-1/12"> {defaut.designation}</div>
             <div className="w-1/12"> {defaut.qtDefauts}</div>
             <div className="w-1/12"> {defaut.totDefauts}</div>
-      
-        
+
             <div className="flex ">
               <IconButton
                 aria-label="edit"
@@ -109,7 +110,7 @@ const deleteDefaut = async (defautId) =>{
                 <EditIcon />
               </IconButton>
               <IconButton aria-label="delete">
-                <DeleteIcon  onClick={()=>deleteDefaut(defaut._id)} />
+                <DeleteIcon onClick={() => deleteDefaut(defaut._id)} />
               </IconButton>
             </div>
           </Card>
